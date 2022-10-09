@@ -1,3 +1,7 @@
+0.1.2 - Released on 2022-10-09
+------------------------------
+* Add missing py.typed marker 
+
 0.1.1 - Released on 2022-10-09
 ------------------------------
 * Downgrade compatibility to python 3.7
