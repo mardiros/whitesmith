@@ -1,0 +1,20 @@
+from blacksmith import HTTPRequest
+{% for response_model in context.response_models %}
+from {{response_model.mod}} import {{response_model.name}}
+{% endfor %}
+
+from whitesmith import router, HTTPResponse
+{% if context.response_models %}from pydantic_factories import ModelFactory{% endif %}
+
+{% for response_model in context.response_models %}
+class {{response_model.name}}Factory(ModelFactory):
+    __model__ = {{response_model.name}}
+
+{% endfor %}
+{% for route in context.routes %}
+
+@router.register("{{route.http_method}} {{route.url_pattern}}")
+def {{route.python_method}}(req: HTTPRequest) -> HTTPResponse[{% if route.response_model %}{{route.response_model}}{% else %}None{% endif %}]:
+    return HTTPResponse({% if route.response_model %}{{route.response_model}}Factory.build(){% endif%})
+
+{% endfor %}

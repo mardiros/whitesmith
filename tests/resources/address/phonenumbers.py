@@ -1,5 +1,6 @@
 from typing import Optional
-from blacksmith import PathInfoField, Request, Response, register, QueryStringField
+
+from blacksmith import PathInfoField, QueryStringField, Request, Response, register
 
 
 class GetPhone(Request):
@@ -8,7 +9,7 @@ class GetPhone(Request):
 
 
 class Phone(Response):
-    phonenumber: str
+    international: str
 
 
 register(
