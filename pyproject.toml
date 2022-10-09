@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "whitesmith"
+version = "0.1.0"
+description = "A "
+authors = ["Guillaume Gauvrit <guillaume@gauvr.it>"]
+readme = "README.md"
+packages = [{include = "whitesmith", from = "src"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
