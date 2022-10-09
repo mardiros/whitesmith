@@ -20,7 +20,7 @@ black:
 rtd:
     poetry export --dev -f requirements.txt -o docs/requirements.txt --without-hashes
 
-release major_minor_patch: rtd && changelog
+release major_minor_patch: changelog
     poetry version {{major_minor_patch}}
     poetry install
 
