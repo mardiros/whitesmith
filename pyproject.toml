@@ -1,8 +1,16 @@
 [tool.poetry]
 name = "whitesmith"
 version = "0.1.0"
-description = "A "
+description = "Toolbox for blacksmithsmith"
 authors = ["Guillaume Gauvrit <guillaume@gauvr.it>"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: BSD License",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+  "Topic :: Software Development :: Testing :: Mocking"
+]
+license = "BSD-derived"
 readme = "README.rst"
 packages = [{include = "whitesmith", from = "src"}]
 
