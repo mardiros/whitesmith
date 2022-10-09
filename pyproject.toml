@@ -6,9 +6,17 @@ authors = ["Guillaume Gauvrit <guillaume@gauvr.it>"]
 readme = "README.md"
 packages = [{include = "whitesmith", from = "src"}]
 
+
+[tool.poetry.scripts]
+generate-mock = "whitesmith.generate_mock:main"
+
 [tool.poetry.dependencies]
 python = "^3.10"
+blacksmith = "^1.0.2"
 
+[tool.poetry.group.dev.dependencies]
+black = "^22.10.0"
+isort = "^5.10.1"
 
 [build-system]
 requires = ["poetry-core"]
