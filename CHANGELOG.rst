@@ -1,7 +1,9 @@
-Changelog
-=========
+0.1.1 - Released on 2022-10-09
+------------------------------
+* Downgrade compatibility to python 3.7
+* Add licence
 
-0.1.0
------
+0.1.0 - Released on 2022-10-09
+------------------------------
 
 * Initial Release
