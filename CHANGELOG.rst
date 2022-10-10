@@ -1,3 +1,7 @@
+0.1.3 - Released on 2022-10-10
+------------------------------
+* Fix typing issue on generated modules 
+
 0.1.2 - Released on 2022-10-09
 ------------------------------
 * Add missing py.typed marker 
