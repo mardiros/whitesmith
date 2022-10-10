@@ -35,6 +35,7 @@ class Route(BaseModel):
 
 
 class HandlerTemplateContext(BaseModel):
+    has_missing_schema: bool = Field(default=False)
     response_models: Set[ResponseModel] = Field(default_factory=set)
     routes: List[Route] = Field(default_factory=list)
 
@@ -60,6 +61,8 @@ class HandlerTemplateContext(BaseModel):
                         name=response_schema.__name__,
                     )
                 )
+            else:
+                self.has_missing_schema = True
 
             self.routes.append(
                 Route(
