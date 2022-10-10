@@ -1,7 +1,7 @@
 import blacksmith
 import pytest
 
-from .fixtures import async_whitesmith_client, sync_whitesmith_client
+from .fixtures import sync_whitesmith_client, async_whitesmith_client
 
 
 @pytest.fixture

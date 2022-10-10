@@ -1,23 +1,28 @@
 {%- if context.has_missing_schema -%}
 from typing import Any
+
 {% endif -%}
 from blacksmith import HTTPRequest
+from whitesmith import router, HTTPResponse
+{%- if context.response_models %}
+from pydantic_factories import ModelFactory
+{%- endif %}
+
 {% for response_model in context.response_models %}
 from {{response_model.mod}} import {{response_model.name}}
-{% endfor %}
+{%- endfor %}
+{%- for response_model in context.response_models %}
 
-from whitesmith import router, HTTPResponse
-{% if context.response_models %}from pydantic_factories import ModelFactory{% endif %}
 
-{% for response_model in context.response_models %}
-class {{response_model.name}}Factory(ModelFactory):
+class {{response_model.name}}Factory(ModelFactory[{{response_model.name}}]):
     __model__ = {{response_model.name}}
 
-{% endfor %}
-{% for route in context.routes %}
+{%- endfor %}
+{%- for route in context.routes %}
+
 
 @router.register("{{route.http_method}} {{route.url_pattern}}")
-def {{route.python_method}}(req: HTTPRequest) -> HTTPResponse[{% if route.response_model %}{{route.response_model}}{% else %}None{% endif %}]:
+def {{route.python_method}}(req: HTTPRequest) -> HTTPResponse[{% if route.response_model %}{{route.response_model}}{% else %}Any{% endif %}]:
     return HTTPResponse({% if route.response_model %}{{route.response_model}}Factory.build(){% endif%})
 
-{% endfor %}
+{%- endfor %}

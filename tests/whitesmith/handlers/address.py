@@ -1,11 +1,12 @@
 from blacksmith import HTTPRequest
+from whitesmith import router, HTTPResponse
 from pydantic_factories import ModelFactory
 
+
 from tests.resources.address.phonenumbers import Phone
-from whitesmith import HTTPResponse, router
 
 
-class PhoneFactory(ModelFactory):
+class PhoneFactory(ModelFactory[Phone]):
     __model__ = Phone
 
 

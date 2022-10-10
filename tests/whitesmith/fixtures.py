@@ -1,6 +1,6 @@
 import blacksmith
 
-from whitesmith.transport import AsyncFakeTransport, SyncFakeTransport
+from whitesmith.transport import SyncFakeTransport, AsyncFakeTransport
 
 blacksmith.scan("tests.resources")
 blacksmith.scan(f"{__package__}.handlers")
