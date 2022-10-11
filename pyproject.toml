@@ -19,7 +19,7 @@ whitesmith = "whitesmith.entrypoint:main"
 
 [tool.poetry.dependencies]
 python = "^3.7"
-blacksmith = "^1.0.2"
+blacksmith = "^2.0.0"
 Jinja2 = "^3.1.2"
 pydantic-factories = "^1.9.0"
 

@@ -16,7 +16,9 @@ sd = blacksmith.SyncRouterDiscovery(
     unversioned_service_url_fmt="http://{service}.NaN",
 )
 
-cli: blacksmith.SyncClientFactory[Any, Any] = blacksmith.SyncClientFactory(sd=sd)
+cli: blacksmith.SyncClientFactory[blacksmith.HTTPError] = blacksmith.SyncClientFactory(
+    sd=sd
+)
 
 
 class ResponseModel(BaseModel):
