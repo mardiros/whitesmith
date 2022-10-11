@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Any, List, Optional, Sequence, Set
+from typing import List, Optional, Sequence, Set
 
 import blacksmith
 from blacksmith.domain.registry import HttpResource, registry

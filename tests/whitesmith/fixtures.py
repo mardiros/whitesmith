@@ -2,7 +2,7 @@ import blacksmith
 
 from whitesmith.transport import SyncFakeTransport, AsyncFakeTransport
 
-blacksmith.scan("tests.resources")
+blacksmith.scan("tests")
 blacksmith.scan(f"{__package__}.handlers")
 
 
