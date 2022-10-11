@@ -1,3 +1,7 @@
+0.2.0 - Released on 2022-10-11
+------------------------------
+* Bump to blacksmith 2.0
+
 0.1.3 - Released on 2022-10-10
 ------------------------------
 * Fix typing issue on generated modules 
