@@ -13,6 +13,16 @@ lint:
 mypy:
     poetry run mypy src/
 
+functest:
+    rm -rf tests/whitesmith/conftest.py
+    rm -rf tests/whitesmith/fixtures.py
+    rm -rf tests/whitesmith/handlers/*
+    poetry run whitesmith generate -m tests
+    poetry run black tests/whitesmith/
+    poetry run pytest -sxv tests/whitesmith/
+
+test: lint mypy functest
+
 black:
     poetry run isort .
     poetry run black .
