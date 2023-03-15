@@ -3,7 +3,7 @@ from typing import Any
 
 {% endif -%}
 from blacksmith import HTTPRequest
-from whitesmith import router, HTTPResponse
+from whitesmith import {{ ", ".join(context.whitesmith_imports) }}
 {%- if context.response_models %}
 from pydantic_factories import ModelFactory
 {%- endif %}
@@ -22,7 +22,17 @@ class {{response_model.name}}Factory(ModelFactory[{{response_model.name}}]):
 
 
 @router.register("{{route.http_method}} {{route.url_pattern}}")
-def {{route.python_method}}(req: HTTPRequest) -> HTTPResponse[{% if route.response_model %}{{route.response_model}}{% else %}Any{% endif %}]:
-    return HTTPResponse({% if route.response_model %}{{route.response_model}}Factory.build(){% endif%})
+def {{route.python_method}}(req: HTTPRequest) -> {{route.response_class}}[{% if route.response_model %}{{route.response_model}}{% else %}Any{% endif %}]:
+    return {{route.response_class}}(
+        {%- if route.response_model -%}
+            {%- if route.response_class == "HTTPCollectionResponse" -%}
+                [
+            {%- endif -%}
+            {{route.response_model}}Factory.build()
+            {%- if route.response_class == "HTTPCollectionResponse" -%}
+                ]
+            {%- endif -%}
+        {%- endif -%}
+    )
 
 {%- endfor %}

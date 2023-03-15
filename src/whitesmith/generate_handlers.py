@@ -34,9 +34,11 @@ class Route(BaseModel):
     http_method: str = Field(...)
     url_pattern: str = Field(...)
     response_model: str = Field(...)
+    response_class: str = Field(...)
 
 
 class HandlerTemplateContext(BaseModel):
+    whitesmith_imports: Set[str] = Field(default_factory=lambda: {"router"})
     has_missing_schema: bool = Field(default=False)
     response_models: Set[ResponseModel] = Field(default_factory=set)
     routes: List[Route] = Field(default_factory=list)
@@ -49,7 +51,6 @@ class HandlerTemplateContext(BaseModel):
         resource: Optional[HttpResource],
         prefix: str = "",
     ) -> "HandlerTemplateContext":
-
         if not resource or not resource.contract:
             return self
         for method, schemas in resource.contract.items():
@@ -66,12 +67,17 @@ class HandlerTemplateContext(BaseModel):
             else:
                 self.has_missing_schema = True
 
+            response_class = "HTTPResponse"
+            if prefix == "collection_" and method == "GET":
+                response_class = "HTTPCollectionResponse"
+            self.whitesmith_imports.add(response_class)
             self.routes.append(
                 Route(
                     python_method=f"{service}_{name}_{prefix}{method}".lower(),
                     http_method=f"{method}",
                     url_pattern=f"{endpoint}{resource.path}",
                     response_model=response_schema_name,
+                    response_class=response_class,
                 )
             )
         return self
