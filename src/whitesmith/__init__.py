@@ -1,6 +1,6 @@
 import pkg_resources
 
-from .model import HTTPResponse, HTTPCollectionResponse
+from .model import HTTPCollectionResponse, HTTPResponse
 from .router import router
 
 __version__ = pkg_resources.get_distribution("whitesmith").version
