@@ -1,3 +1,7 @@
+0.3.1 - Released on 2023-03-15
+------------------------------
+* Fix typing 
+
 0.3.0 - Released on 2023-03-15
 ------------------------------
 * Implement collection_get response 
