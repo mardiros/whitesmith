@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "whitesmith"
-version = "0.2.0"
+version = "0.3.0"
 description = "Toolbox for blacksmithsmith"
 authors = ["Guillaume Gauvrit <guillaume@gauvr.it>"]
 classifiers = [

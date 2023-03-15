@@ -1,3 +1,7 @@
+0.3.0 - Released on 2023-03-15
+------------------------------
+* Implement collection_get response 
+
 0.2.0 - Released on 2022-10-11
 ------------------------------
 * Bump to blacksmith 2.0
