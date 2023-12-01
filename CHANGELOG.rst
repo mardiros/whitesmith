@@ -1,3 +1,7 @@
+0.4.0 - Released on 2023-12-01
+------------------------------
+* Add method router.get, router.post and so on to get more readable routes 
+
 0.3.1 - Released on 2023-03-15
 ------------------------------
 * Fix typing 
