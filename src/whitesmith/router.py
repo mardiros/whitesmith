@@ -33,5 +33,20 @@ class Router:
 
         return wrapper
 
+    def get(self, url: str) -> Callable[[Handler], Handler]:
+        return self.register(f"GET {url}")
+
+    def post(self, url: str) -> Callable[[Handler], Handler]:
+        return self.register(f"POST {url}")
+
+    def put(self, url: str) -> Callable[[Handler], Handler]:
+        return self.register(f"PUT {url}")
+
+    def patch(self, url: str) -> Callable[[Handler], Handler]:
+        return self.register(f"PATCH {url}")
+
+    def delete(self, url: str) -> Callable[[Handler], Handler]:
+        return self.register(f"DELETE {url}")
+
 
 router = Router()
