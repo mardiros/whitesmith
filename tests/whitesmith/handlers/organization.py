@@ -1,17 +1,13 @@
 from typing import Any
 
 from blacksmith import HTTPRequest
-from whitesmith import HTTPResponse, HTTPCollectionResponse, router
+from whitesmith import HTTPCollectionResponse, HTTPResponse, router
 from pydantic_factories import ModelFactory
 
 
-from tests.resources.organization.user import User
 from tests.resources.organization.user import PartialUser
 from tests.resources.organization.user import UserCreated
-
-
-class UserFactory(ModelFactory[User]):
-    __model__ = User
+from tests.resources.organization.user import User
 
 
 class PartialUserFactory(ModelFactory[PartialUser]):
@@ -20,6 +16,10 @@ class PartialUserFactory(ModelFactory[PartialUser]):
 
 class UserCreatedFactory(ModelFactory[UserCreated]):
     __model__ = UserCreated
+
+
+class UserFactory(ModelFactory[User]):
+    __model__ = User
 
 
 @router.register("GET http://organization.v5/users")
