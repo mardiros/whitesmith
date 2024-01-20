@@ -1,3 +1,4 @@
+import sys
 from pathlib import Path
 from typing import List, Optional, Sequence, Set
 
@@ -21,6 +22,16 @@ cli: blacksmith.SyncClientFactory[blacksmith.HTTPError] = blacksmith.SyncClientF
 )
 
 
+def get_polifactory_name() -> str:
+    if sys.version_info < (3, 8, 0):
+        return "pydantic_factories"
+    return "polyfactory.factories.pydantic_factory"
+
+
+def import_pydantic_factory() -> str:
+    return f"from {get_polifactory_name()} import ModelFactory"
+
+
 class ResponseModel(BaseModel):
     mod: str = Field(...)
     name: str = Field(...)
@@ -38,6 +49,7 @@ class Route(BaseModel):
 
 
 class HandlerTemplateContext(BaseModel):
+    extra_import_lines: Set[str] = Field(default_factory=set)
     whitesmith_imports: Set[str] = Field(default_factory=lambda: {"router"})
     has_missing_schema: bool = Field(default=False)
     response_models: Set[ResponseModel] = Field(default_factory=set)
@@ -58,6 +70,7 @@ class HandlerTemplateContext(BaseModel):
             response_schema_name = ""
             if response_schema:
                 response_schema_name = response_schema.__name__
+                self.extra_import_lines.add(import_pydantic_factory())
                 self.response_models.add(
                     ResponseModel(
                         mod=response_schema.__module__,
@@ -86,14 +99,12 @@ class HandlerTemplateContext(BaseModel):
 def generate_handlers(
     outdir: Path, resources_mod: Sequence[str], overwrite: bool
 ) -> None:
-
     blacksmith.scan(*resources_mod)
 
     print("Generating mocks from blacksmith registry...")
 
     outdir = outdir / "whitesmith"
     for client, service in registry.client_service.items():
-
         service, resources = registry.get_service(client)
         endpoint = sd.get_endpoint(*service)
 

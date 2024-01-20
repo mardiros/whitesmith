@@ -1,6 +1,7 @@
 from blacksmith import HTTPRequest
-from whitesmith import HTTPResponse, router
-from pydantic_factories import ModelFactory
+from whitesmith import router, HTTPResponse
+
+from polyfactory.factories.pydantic_factory import ModelFactory
 
 
 from tests.resources.address.phonenumbers import Phone

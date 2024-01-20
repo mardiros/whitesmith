@@ -1,8 +1,9 @@
 from typing import Any
 
 from blacksmith import HTTPRequest
-from whitesmith import HTTPCollectionResponse, HTTPResponse, router
-from pydantic_factories import ModelFactory
+from whitesmith import router, HTTPCollectionResponse, HTTPResponse
+
+from polyfactory.factories.pydantic_factory import ModelFactory
 
 
 from tests.resources.organization.user import PartialUser

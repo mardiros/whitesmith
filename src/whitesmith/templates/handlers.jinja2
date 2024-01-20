@@ -4,9 +4,9 @@ from typing import Any
 {% endif -%}
 from blacksmith import HTTPRequest
 from whitesmith import {{ ", ".join(context.whitesmith_imports) }}
-{%- if context.response_models %}
-from pydantic_factories import ModelFactory
-{%- endif %}
+{% for import_lines in context.extra_import_lines %}
+{{ import_lines }}
+{%- endfor %}
 
 {% for response_model in context.response_models %}
 from {{response_model.mod}} import {{response_model.name}}
