@@ -1,3 +1,9 @@
+0.5.0 - Released on 2024-01-20
+------------------------------
+* Replace pydantic-factories by polyfactory for python >=3.8
+  The condition to detect the version of pydantic is not ideal
+  and should be updated on a next patch version.
+
 0.4.0 - Released on 2023-12-01
 ------------------------------
 * Add method router.get, router.post and so on to get more readable routes 
