@@ -1,7 +1,7 @@
 from typing import Any
 
 from blacksmith import HTTPRequest
-from whitesmith import HTTPResponse, HTTPCollectionResponse, router
+from whitesmith import HTTPResponse, router, HTTPCollectionResponse
 from pydantic_factories import ModelFactory
 
 
@@ -22,23 +22,23 @@ class UserCreatedFactory(ModelFactory[UserCreated]):
     __model__ = UserCreated
 
 
-@router.register("GET http://organization.v5/users")
+@router.get("http://organization.v5/users")
 def organization_users_collection_get(
     req: HTTPRequest,
 ) -> HTTPCollectionResponse[PartialUser]:
     return HTTPCollectionResponse([PartialUserFactory.build()])
 
 
-@router.register("POST http://organization.v5/users")
+@router.post("http://organization.v5/users")
 def organization_users_collection_post(req: HTTPRequest) -> HTTPResponse[UserCreated]:
     return HTTPResponse(UserCreatedFactory.build())
 
 
-@router.register("GET http://organization.v5/users/{user_id}")
+@router.get("http://organization.v5/users/{user_id}")
 def organization_users_get(req: HTTPRequest) -> HTTPResponse[User]:
     return HTTPResponse(UserFactory.build())
 
 
-@router.register("PATCH http://organization.v5/users/{user_id}")
+@router.patch("http://organization.v5/users/{user_id}")
 def organization_users_patch(req: HTTPRequest) -> HTTPResponse[Any]:
     return HTTPResponse()

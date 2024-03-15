@@ -21,7 +21,7 @@ class {{response_model.name}}Factory(ModelFactory[{{response_model.name}}]):
 {%- for route in context.routes %}
 
 
-@router.register("{{route.http_method}} {{route.url_pattern}}")
+@router.{{route.http_method|lower}}("{{route.url_pattern}}")
 def {{route.python_method}}(req: HTTPRequest) -> {{route.response_class}}[{% if route.response_model %}{{route.response_model}}{% else %}Any{% endif %}]:
     return {{route.response_class}}(
         {%- if route.response_model -%}
