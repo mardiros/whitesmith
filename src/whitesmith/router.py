@@ -12,9 +12,7 @@ class Router:
     routes: MutableMapping[Tuple[str, str], Handler] = {}
 
     def handle(self, req: HTTPRequest) -> BMResponse:
-        try:
-            return self.routes[(req.method, req.url_pattern)](req).build()
-        except KeyError:
+        if (req.method, req.url_pattern) not in self.routes:
             return BMResponse(
                 500,
                 {},
@@ -23,6 +21,8 @@ class Router:
                     f"{req.method} {req.url_pattern}"
                 },
             )
+
+        return self.routes[(req.method, req.url_pattern)](req).build()
 
     def register(self, route: str) -> Callable[[Handler], Handler]:
         meth, url = route.split(maxsplit=2)
