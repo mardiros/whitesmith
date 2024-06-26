@@ -1,4 +1,3 @@
-import sys
 from pathlib import Path
 from typing import List, Optional, Sequence, Set
 
@@ -22,14 +21,8 @@ cli: blacksmith.SyncClientFactory[blacksmith.HTTPError] = blacksmith.SyncClientF
 )
 
 
-def get_polifactory_name() -> str:
-    if sys.version_info < (3, 8, 0):
-        return "pydantic_factories"
-    return "polyfactory.factories.pydantic_factory"
-
-
 def import_pydantic_factory() -> str:
-    return f"from {get_polifactory_name()} import ModelFactory"
+    return "from polyfactory.factories.pydantic_factory import ModelFactory"
 
 
 class ResponseModel(BaseModel):
