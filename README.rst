@@ -3,6 +3,9 @@ Whitesmith
 
 Test helper for blacksmith resources.
 
+.. image:: https://github.com/mardiros/whitesmith/actions/workflows/main.yml/badge.svg
+   :target: https://github.com/mardiros/whitesmith/actions/workflows/main.yml
+   :alt: Continuous Integration
 
 Motivation
 ----------
