@@ -1,3 +1,8 @@
+0.6.0 - Released on 2024-06-26
+------------------------------
+* Use blacksmith 3
+* Drop python 3.7 support
+
 0.5.0 - Released on 2024-01-20
 ------------------------------
 * Replace pydantic-factories by polyfactory for python >=3.8
