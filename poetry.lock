@@ -73,19 +73,19 @@ uvloop = ["uvloop (>=0.15.2)"]
 
 [[package]]
 name = "blacksmith"
-version = "2.7.2"
+version = "3.0.0"
 description = "REST API Client designed for microservices"
 optional = false
-python-versions = "<4.0,>=3.7"
+python-versions = "<4.0.0,>=3.8.1"
 files = [
-    {file = "blacksmith-2.7.2-py3-none-any.whl", hash = "sha256:abd0d26d448395a5ce321e436ce75275a729a340bcc63174ecbca1403d4894f2"},
-    {file = "blacksmith-2.7.2.tar.gz", hash = "sha256:0893b6091d5ed6569c6246c1e311292333b3a575a21825a5f647c68667056c8d"},
+    {file = "blacksmith-3.0.0-py3-none-any.whl", hash = "sha256:77faa7c5a66c7860a5257d7be8d75ac933b1da8db144ac35338b929d21c42f15"},
+    {file = "blacksmith-3.0.0.tar.gz", hash = "sha256:d00970e1afab4f4368028804ea460eff8f3f19ac7cc812c103edb487ec4b709e"},
 ]
 
 [package.dependencies]
-httpx = {version = ">=0.24,<1", markers = "python_version >= \"3.8\""}
-purgatory = ">=1.0.3,<2.0.0"
-pydantic = ">=1.10.12,<3"
+httpx = ">=0.24"
+purgatory = ">=2.0.0,<3.0.0"
+pydantic = ">=2.6.0,<3.0.0"
 result = ">=0.11.0,<1"
 typing-extensions = ">=4.7.0,<5.0.0"
 
@@ -498,18 +498,17 @@ sqlalchemy = ["sqlalchemy (>=1.4.29)"]
 
 [[package]]
 name = "purgatory"
-version = "1.0.3"
+version = "2.0.0"
 description = "A circuit breaker implementation for asyncio"
 optional = false
-python-versions = ">=3.7,<4.0"
+python-versions = "<4.0,>=3.8"
 files = [
-    {file = "purgatory-1.0.3-py3-none-any.whl", hash = "sha256:11b9526a6793d415bb7394019c85d885b34b524e200274efd57bdca728005e93"},
-    {file = "purgatory-1.0.3.tar.gz", hash = "sha256:4aafcf503181befd5a2ff7640bd6e61f0a5e812ad48c605a922743d98dfb99d0"},
+    {file = "purgatory-2.0.0-py3-none-any.whl", hash = "sha256:b122bed20b04f6ac61027c346ee549641aee13e99599e0d175228745273163e3"},
+    {file = "purgatory-2.0.0.tar.gz", hash = "sha256:5e1ed4378a444203a6694dfebfedb97ffcd26fd07f135a00f70f041e0f6c045b"},
 ]
 
 [package.extras]
-aioredis = ["redis (>=4.6.0,<5.0.0)"]
-redis = ["redis (>=4.6.0,<5.0.0)"]
+redis = ["redis (>=5.0.4,<6.0.0)"]
 
 [[package]]
 name = "pycodestyle"
@@ -764,5 +763,5 @@ files = [
 
 [metadata]
 lock-version = "2.0"
-python-versions = "^3.8"
-content-hash = "9f8c61d85dfeba8bb6b5a92203a23cbf1ce99be158dd0a3a2fa952f22b47320e"
+python-versions = "^3.8.1"
+content-hash = "045a42a83b8793f4b014c9333b052e2a8e99242a01a7d4ea479749a110c615ab"

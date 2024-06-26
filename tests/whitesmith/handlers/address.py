@@ -1,5 +1,5 @@
 from blacksmith import HTTPRequest
-from whitesmith import router, HTTPResponse
+from whitesmith import HTTPResponse, router
 
 from polyfactory.factories.pydantic_factory import ModelFactory
 

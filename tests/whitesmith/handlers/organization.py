@@ -1,22 +1,22 @@
 from typing import Any
 
 from blacksmith import HTTPRequest
-from whitesmith import router, HTTPCollectionResponse, HTTPResponse
+from whitesmith import HTTPResponse, HTTPCollectionResponse, router
 
 from polyfactory.factories.pydantic_factory import ModelFactory
 
 
-from tests.resources.organization.user import PartialUser
 from tests.resources.organization.user import UserCreated
+from tests.resources.organization.user import PartialUser
 from tests.resources.organization.user import User
-
-
-class PartialUserFactory(ModelFactory[PartialUser]):
-    __model__ = PartialUser
 
 
 class UserCreatedFactory(ModelFactory[UserCreated]):
     __model__ = UserCreated
+
+
+class PartialUserFactory(ModelFactory[PartialUser]):
+    __model__ = PartialUser
 
 
 class UserFactory(ModelFactory[User]):

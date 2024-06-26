@@ -18,8 +18,8 @@ packages = [{include = "whitesmith", from = "src"}]
 whitesmith = "whitesmith.entrypoint:main"
 
 [tool.poetry.dependencies]
-python = "^3.8"
-blacksmith = "^2.0.0"
+python = "^3.8.1"
+blacksmith = "^3.0.0"
 Jinja2 = "^3.1.2"
 polyfactory = "^2.14.0"
 
