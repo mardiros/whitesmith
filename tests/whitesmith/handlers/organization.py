@@ -1,7 +1,7 @@
 from typing import Any
 
 from blacksmith import HTTPRequest
-from whitesmith import HTTPResponse, HTTPCollectionResponse, router
+from whitesmith import router, HTTPCollectionResponse, HTTPResponse
 
 from polyfactory.factories.pydantic_factory import ModelFactory
 

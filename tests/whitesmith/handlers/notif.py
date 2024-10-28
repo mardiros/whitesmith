@@ -1,7 +1,7 @@
 from typing import Any
 
 from blacksmith import HTTPRequest
-from whitesmith import HTTPResponse, router
+from whitesmith import router, HTTPResponse
 
 
 @router.register("POST http://notif.v2/notifications")
