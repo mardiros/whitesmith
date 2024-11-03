@@ -1,3 +1,11 @@
+4.0.0 - Released on 2024-11-03
+------------------------------
+* Use blacksmith 4
+* Drop python 3.8 support
+* Update code license to MIT
+* Update packaging to use uv/pdm
+* Update CI
+
 0.6.0 - Released on 2024-06-26
 ------------------------------
 * Use blacksmith 3
