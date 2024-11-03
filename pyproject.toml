@@ -59,7 +59,7 @@ target-version = "py39"
 
 [tool.ruff.lint]
 select = [
-    # "B",   # bug bear security warning
+    "B",   # bug bear security warning
     "I",   # isort import order
     "F",   # pyflakes
     # "UP",  # alter when better syntax is available
