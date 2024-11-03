@@ -1,6 +1,6 @@
 [project]
 name = "whitesmith"
-version = "0.6.0"
+version = "4.0.0"
 description = "Testing toolbox for blacksmith"
 authors = [{ name = "Guillaume Gauvrit", email = "guillaume@gauvr.it" }]
 classifiers = [
