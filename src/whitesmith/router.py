@@ -1,4 +1,5 @@
-from typing import Any, Callable, MutableMapping, Tuple, Union
+from collections.abc import MutableMapping
+from typing import Any, Callable, ClassVar, Union
 
 from blacksmith import HTTPRequest
 from blacksmith import HTTPResponse as BMResponse
@@ -9,7 +10,7 @@ Handler = Callable[[HTTPRequest], Union[HTTPResponse[Any], HTTPCollectionRespons
 
 
 class Router:
-    routes: MutableMapping[Tuple[str, str], Handler] = {}
+    routes: ClassVar[MutableMapping[tuple[str, str], Handler]] = {}
 
     def handle(self, req: HTTPRequest) -> BMResponse:
         try:

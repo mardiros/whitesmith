@@ -2,7 +2,7 @@ from typing import Any
 
 import blacksmith
 
-from whitesmith.transport import SyncFakeTransport, AsyncFakeTransport
+from whitesmith.transport import AsyncFakeTransport, SyncFakeTransport
 
 blacksmith.scan("tests")
 blacksmith.scan(f"{__package__}.handlers")
