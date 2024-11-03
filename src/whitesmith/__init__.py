@@ -1,6 +1,5 @@
 from importlib import metadata
 
-
 from .model import HTTPCollectionResponse, HTTPResponse
 from .router import router
 
