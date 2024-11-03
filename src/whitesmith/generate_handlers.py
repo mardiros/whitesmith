@@ -1,5 +1,6 @@
+from collections.abc import Sequence
 from pathlib import Path
-from typing import List, Optional, Sequence, Set
+from typing import Optional
 
 import blacksmith
 from blacksmith.domain.registry import HttpResource, registry
@@ -42,11 +43,11 @@ class Route(BaseModel):
 
 
 class HandlerTemplateContext(BaseModel):
-    extra_import_lines: Set[str] = Field(default_factory=set)
-    whitesmith_imports: Set[str] = Field(default_factory=lambda: {"router"})
+    extra_import_lines: set[str] = Field(default_factory=set)
+    whitesmith_imports: set[str] = Field(default_factory=lambda: {"router"})
     has_missing_schema: bool = Field(default=False)
-    response_models: Set[ResponseModel] = Field(default_factory=set)
-    routes: List[Route] = Field(default_factory=list)
+    response_models: set[ResponseModel] = Field(default_factory=set)
+    routes: list[Route] = Field(default_factory=list)
 
     def add_resource(
         self,

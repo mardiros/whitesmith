@@ -1,4 +1,4 @@
-from typing import Dict, Sequence
+from collections.abc import Sequence
 
 from blacksmith import PostBodyField, Request, register
 from pydantic import BaseModel, Field
@@ -14,7 +14,7 @@ class Recipient(BaseModel):
 class CreateNotification(Request):
     template: str = PostBodyField()
     recipients: Sequence[Recipient] = PostBodyField()
-    params: Dict[str, str] = PostBodyField()
+    params: dict[str, str] = PostBodyField()
 
 
 register(

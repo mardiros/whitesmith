@@ -1,4 +1,5 @@
-from typing import Generic, Mapping, Optional, Sequence, TypeVar
+from collections.abc import Mapping, Sequence
+from typing import Generic, Optional, TypeVar
 
 from blacksmith import HTTPResponse as BMResponse
 from pydantic import BaseModel
