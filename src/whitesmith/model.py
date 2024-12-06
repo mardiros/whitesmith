@@ -26,7 +26,7 @@ class HTTPResponse(Generic[T_co]):
         return BMResponse(
             status_code=self.status_code,
             headers=self.headers,
-            json=(None if self.body is None else self.body.dict()),
+            json=(None if self.body is None else self.body.model_dump()),
         )
 
 
@@ -47,5 +47,5 @@ class HTTPCollectionResponse(Generic[T_co]):
         return BMResponse(
             status_code=self.status_code,
             headers=self.headers,
-            json=([i.dict() for i in self.body]),
+            json=([i.model_dump() for i in self.body]),
         )
