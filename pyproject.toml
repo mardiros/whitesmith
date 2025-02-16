@@ -4,7 +4,7 @@ version = "4.0.1"
 description = "Testing toolbox for blacksmith"
 authors = [{ name = "Guillaume Gauvrit", email = "guillaume@gauvr.it" }]
 classifiers = [
-    "Development Status :: 4 - Beta",
+    "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
     "License :: OSI Approved :: MIT License",
     "Topic :: Software Development :: Libraries :: Python Modules",
@@ -15,10 +15,10 @@ requires-python = ">=3.9"
 readme = "README.rst"
 
 dependencies = [
-    "pydantic>=2.6.0",
-    "blacksmith >=4.0.0,<5",
     "Jinja2 >=3.1.2,<4",
+    "blacksmith >=4.0.0,<5",
     "polyfactory >=2.14.0,<3",
+    "pydantic>=2.6.0",
 ]
 
 [project.urls]
