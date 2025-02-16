@@ -1,4 +1,5 @@
-default_test_suite := 'tests/unittests'
+default_test_suite := 'tests'
+package := 'whitesmith'
 
 install:
     uv sync --group dev
@@ -18,6 +19,15 @@ functest:
     uv run pytest -sxv tests/whitesmith/
 
 test: lint typecheck functest
+
+lf:
+    uv run pytest -sxvvv --lf
+
+cov test_suite=default_test_suite:
+    rm -f .coverage
+    rm -rf htmlcov
+    uv run pytest --cov-report=html --cov={{package}} {{test_suite}}
+    xdg-open htmlcov/index.html
 
 fmt:
     uv run ruff check --fix .
