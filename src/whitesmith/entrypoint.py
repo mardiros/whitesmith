@@ -11,8 +11,7 @@ def generate(outdir: str, resources_mod: Sequence[str], overwrite: bool) -> None
     generate_handlers(outpath, resources_mod, overwrite)
 
 
-def main() -> None:
-    args = sys.argv
+def main(args: Sequence[str] = sys.argv) -> None:
     parser = argparse.ArgumentParser()
 
     subparsers = parser.add_subparsers(title="action", required=True)
