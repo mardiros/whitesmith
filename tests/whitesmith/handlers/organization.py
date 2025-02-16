@@ -11,12 +11,12 @@ class PartialUserFactory(ModelFactory[PartialUser]):
     __model__ = PartialUser
 
 
-class UserCreatedFactory(ModelFactory[UserCreated]):
-    __model__ = UserCreated
-
-
 class UserFactory(ModelFactory[User]):
     __model__ = User
+
+
+class UserCreatedFactory(ModelFactory[UserCreated]):
+    __model__ = UserCreated
 
 
 @router.get("http://organization.v5/users")
