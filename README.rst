@@ -7,6 +7,11 @@ Test helper for blacksmith resources.
    :target: https://github.com/mardiros/whitesmith/actions/workflows/tests.yml
    :alt: Continuous Integration
 
+.. image:: https://codecov.io/gh/mardiros/whitesmith/graph/badge.svg?token=V1W7W6YWNN
+   :target: https://codecov.io/gh/mardiros/whitesmith
+   :alt: Coverage
+
+
 Motivation
 ----------
 
