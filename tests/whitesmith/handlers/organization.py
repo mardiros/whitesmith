@@ -7,12 +7,12 @@ from tests.resources.organization.user import PartialUser, User, UserCreated
 from whitesmith import HTTPCollectionResponse, HTTPResponse, router
 
 
-class UserCreatedFactory(ModelFactory[UserCreated]):
-    __model__ = UserCreated
-
-
 class PartialUserFactory(ModelFactory[PartialUser]):
     __model__ = PartialUser
+
+
+class UserCreatedFactory(ModelFactory[UserCreated]):
+    __model__ = UserCreated
 
 
 class UserFactory(ModelFactory[User]):
