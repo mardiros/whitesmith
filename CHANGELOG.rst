@@ -1,3 +1,8 @@
+4.0.2 - Released on 2025-02-18
+------------------------------
+* Update generation from template using new router method (get, post, ...)
+* Improve test coverage
+
 4.0.1 - Released on 2024-12-06
 ------------------------------
 * Remove deprecation warning
