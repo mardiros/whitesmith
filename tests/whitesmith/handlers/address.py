@@ -10,5 +10,7 @@ class PhoneFactory(ModelFactory[Phone]):
 
 
 @router.get("http://address.NaN/phonenumbers/{phonenumber}")
-def address_phonenumbers_get(req: HTTPRequest) -> HTTPResponse[Phone]:
+def address_phonenumbers_get(
+    req: HTTPRequest,
+) -> HTTPResponse[Phone]:
     return HTTPResponse(PhoneFactory.build())
