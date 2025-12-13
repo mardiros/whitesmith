@@ -12,7 +12,7 @@ classifiers = [
 ]
 license = { text = "MIT" }
 requires-python = ">=3.10"
-readme = "README.rst"
+readme = "README.md"
 
 dependencies = [
     "Jinja2 >=3.1.2,<4",
@@ -24,16 +24,16 @@ dependencies = [
 
 [project.urls]
 Homepage = "https://github.com/mardiros/whitesmith"
-Documentation = "https://github.com/mardiros/whitesmith/blob/main/README.rst"
+Documentation = "https://github.com/mardiros/whitesmith/blob/main/README.md"
 Repository = "https://github.com/mardiros/whitesmith.git"
 Issues = "https://github.com/mardiros/whitesmith/issues"
-Changelog = "https://github.com/mardiros/whitesmith/blob/main/CHANGELOG.rst"
+Changelog = "https://github.com/mardiros/whitesmith/blob/main/CHANGELOG.md"
 
 [project.scripts]
 whitesmith = "whitesmith.entrypoints.cli:main"
 
 [tool.pdm.build]
-includes = ["src", "CHANGELOG.rst"]
+includes = ["src", "CHANGELOG.md"]
 excludes = ["tests"]
 
 [dependency-groups]
