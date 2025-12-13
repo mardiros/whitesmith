@@ -11,7 +11,7 @@ from whitesmith import {{ ", ".join(context.whitesmith_imports) }}
 {% for response_model in context.response_models %}
 from {{response_model.mod}} import {{response_model.name}}
 {%- endfor %}
-{%- for response_model in context.response_models %}
+{%- for response_model in context.sorted_response_models %}
 
 
 class {{response_model.name}}Factory(ModelFactory[{{response_model.name}}]):
@@ -38,4 +38,4 @@ def {{route.python_method}}(
     )
 
 {%- endfor %}
-{{""}}
+{{-"\n"-}}

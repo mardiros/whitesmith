@@ -48,6 +48,10 @@ class HandlerTemplateContext(BaseModel):
     response_models: set[ResponseModel] = Field(default_factory=set)
     routes: list[Route] = Field(default_factory=list)
 
+    @property
+    def sorted_response_models(self) -> list[ResponseModel]:
+        return sorted(self.response_models, key=lambda x: x.__class__.__name__)
+
     def add_resource(
         self,
         endpoint: str,
