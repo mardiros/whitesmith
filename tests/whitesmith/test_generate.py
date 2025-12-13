@@ -1,5 +1,4 @@
 from pathlib import Path
-from typing import Optional
 
 from blacksmith import PathInfoField, QueryStringField, Request, Response
 from blacksmith.domain.registry import HttpResource
@@ -14,7 +13,7 @@ from whitesmith.generate_handlers import (
 
 class GetPhone(Request):
     phonenumber: str = PathInfoField(...)
-    country: Optional[str] = QueryStringField(None)
+    country: str | None = QueryStringField(None)
 
 
 class Phone(Response):

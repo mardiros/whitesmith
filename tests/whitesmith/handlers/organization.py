@@ -20,7 +20,9 @@ class UserFactory(ModelFactory[User]):
 
 
 @router.get("http://organization.v5/users")
-def organization_users_collection_get(req: HTTPRequest) -> HTTPCollectionResponse[PartialUser]:
+def organization_users_collection_get(
+    req: HTTPRequest,
+) -> HTTPCollectionResponse[PartialUser]:
     return HTTPCollectionResponse([PartialUserFactory.build()])
 
 

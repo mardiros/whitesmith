@@ -1,5 +1,3 @@
-from typing import Optional
-
 from blacksmith import (
     PathInfoField,
     PostBodyField,
@@ -24,8 +22,8 @@ class CreateUser(Request):
 
 
 class PatchUser(GetUser):
-    name: Optional[str] = PostBodyField()
-    lang: Optional[str] = PostBodyField()
+    name: str | None = PostBodyField()
+    lang: str | None = PostBodyField()
 
 
 class User(Response):

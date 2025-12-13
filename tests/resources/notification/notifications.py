@@ -1,8 +1,8 @@
 from collections.abc import Sequence
+from typing import Literal
 
 from blacksmith import PostBodyField, Request, register
 from pydantic import BaseModel, Field
-from typing_extensions import Literal
 
 
 class Recipient(BaseModel):

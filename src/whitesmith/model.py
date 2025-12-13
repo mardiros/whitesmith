@@ -1,5 +1,5 @@
 from collections.abc import Mapping, Sequence
-from typing import Generic, Optional, TypeVar
+from typing import Generic, TypeVar
 
 from blacksmith import HTTPResponse as BMResponse
 from pydantic import BaseModel
@@ -10,13 +10,13 @@ T_co = TypeVar("T_co", bound=BaseModel, covariant=True)
 class HTTPResponse(Generic[T_co]):
     status_code: int
     headers: Mapping[str, str]
-    body: Optional[T_co]
+    body: T_co | None
 
     def __init__(
         self,
-        body: Optional[T_co] = None,
+        body: T_co | None = None,
         status_code: int = 200,
-        headers: Optional[Mapping[str, str]] = None,
+        headers: Mapping[str, str] | None = None,
     ) -> None:
         self.status_code = status_code
         self.headers = headers or {}
@@ -37,7 +37,7 @@ class HTTPCollectionResponse(Generic[T_co]):
         self,
         body: Sequence[T_co],
         status_code: int = 200,
-        headers: Optional[Mapping[str, str]] = None,
+        headers: Mapping[str, str] | None = None,
     ) -> None:
         self.status_code = status_code
         self.headers = headers or {}

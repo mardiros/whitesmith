@@ -1,6 +1,5 @@
 from collections.abc import Sequence
 from pathlib import Path
-from typing import Optional
 
 import blacksmith
 from blacksmith.domain.registry import HttpResource, registry
@@ -54,7 +53,7 @@ class HandlerTemplateContext(BaseModel):
         endpoint: str,
         service: str,
         name: str,
-        resource: Optional[HttpResource],
+        resource: HttpResource | None,
         prefix: str = "",
     ) -> "HandlerTemplateContext":
         if not resource or not resource.contract:
