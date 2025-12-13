@@ -1,3 +1,9 @@
+5.0.0 - Released on 2025-12-13
+------------------------------
+* Upgrade to blacksmith 5.0
+* Rewrite the package in order to expose pytest fixtures directly.
+  The API is more clean from a user perspective.
+
 4.0.2 - Released on 2025-02-18
 ------------------------------
 * Update generation from template using new router method (get, post, ...)
