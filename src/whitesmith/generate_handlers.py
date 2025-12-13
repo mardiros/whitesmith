@@ -1,6 +1,5 @@
 from collections.abc import Sequence
 from pathlib import Path
-from typing import Optional
 
 import blacksmith
 from blacksmith.domain.registry import HttpResource, registry
@@ -49,12 +48,16 @@ class HandlerTemplateContext(BaseModel):
     response_models: set[ResponseModel] = Field(default_factory=set)
     routes: list[Route] = Field(default_factory=list)
 
+    @property
+    def sorted_response_models(self) -> list[ResponseModel]:
+        return sorted(self.response_models, key=lambda x: x.__class__.__name__)
+
     def add_resource(
         self,
         endpoint: str,
         service: str,
         name: str,
-        resource: Optional[HttpResource],
+        resource: HttpResource | None,
         prefix: str = "",
     ) -> "HandlerTemplateContext":
         if not resource or not resource.contract:

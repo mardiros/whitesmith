@@ -1,12 +1,12 @@
-from collections.abc import MutableMapping
-from typing import Any, Callable, Union
+from collections.abc import Callable, MutableMapping
+from typing import Any
 
 from blacksmith import HTTPRequest
 from blacksmith import HTTPResponse as BMResponse
 
 from whitesmith import HTTPCollectionResponse, HTTPResponse
 
-Handler = Callable[[HTTPRequest], Union[HTTPResponse[Any], HTTPCollectionResponse[Any]]]
+Handler = Callable[[HTTPRequest], HTTPResponse[Any] | HTTPCollectionResponse[Any]]
 
 
 class Router:

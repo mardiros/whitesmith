@@ -7,16 +7,16 @@ from tests.resources.organization.user import PartialUser, User, UserCreated
 from whitesmith import HTTPCollectionResponse, HTTPResponse, router
 
 
-class PartialUserFactory(ModelFactory[PartialUser]):
-    __model__ = PartialUser
+class UserCreatedFactory(ModelFactory[UserCreated]):
+    __model__ = UserCreated
 
 
 class UserFactory(ModelFactory[User]):
     __model__ = User
 
 
-class UserCreatedFactory(ModelFactory[UserCreated]):
-    __model__ = UserCreated
+class PartialUserFactory(ModelFactory[PartialUser]):
+    __model__ = PartialUser
 
 
 @router.get("http://organization.v5/users")
@@ -27,15 +27,21 @@ def organization_users_collection_get(
 
 
 @router.post("http://organization.v5/users")
-def organization_users_collection_post(req: HTTPRequest) -> HTTPResponse[UserCreated]:
+def organization_users_collection_post(
+    req: HTTPRequest,
+) -> HTTPResponse[UserCreated]:
     return HTTPResponse(UserCreatedFactory.build())
 
 
 @router.get("http://organization.v5/users/{user_id}")
-def organization_users_get(req: HTTPRequest) -> HTTPResponse[User]:
+def organization_users_get(
+    req: HTTPRequest,
+) -> HTTPResponse[User]:
     return HTTPResponse(UserFactory.build())
 
 
 @router.patch("http://organization.v5/users/{user_id}")
-def organization_users_patch(req: HTTPRequest) -> HTTPResponse[Any]:
+def organization_users_patch(
+    req: HTTPRequest,
+) -> HTTPResponse[Any]:
     return HTTPResponse()

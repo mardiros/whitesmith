@@ -11,12 +11,12 @@ classifiers = [
     "Topic :: Software Development :: Testing :: Mocking",
 ]
 license = { text = "MIT" }
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 readme = "README.rst"
 
 dependencies = [
     "Jinja2 >=3.1.2,<4",
-    "blacksmith >=4.0.0,<5",
+    "blacksmith >=5.0.0,<6",
     "polyfactory >=2.14.0,<3",
     "pydantic>=2.6.0",
 ]
@@ -61,7 +61,7 @@ venvPath = ".venv"
 
 [tool.ruff]
 line-length = 88
-target-version = "py39"
+target-version = "py310"
 
 [tool.ruff.lint]
 select = [
