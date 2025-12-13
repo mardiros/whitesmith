@@ -10,17 +10,31 @@ from whitesmith import Router
 from whitesmith.router import RouterBuilder
 from whitesmith.transport import AsyncFakeTransport, SyncFakeTransport
 
-HANDLERS: dict[str, Router] = {}
+HANDLERS: dict[str, Router | None] = {}
 
 
 @pytest.fixture()
 def whitesmith_router(request: pytest.FixtureRequest) -> Router:
-    modname = request.module.__package__.split(".")[0]
-    modname = f"{modname}.whitesmith_handlers"
-    if modname not in HANDLERS:
-        mod = importlib.import_module(modname)
-        HANDLERS[modname] = RouterBuilder().build_router(mod)
-    return HANDLERS[modname]
+    mods: list[str] = request.module.__package__.split(".")
+    mods.pop()  # we don't look at the file
+    full_modname = ""
+    while mods:
+        full_modname = f"{'.'.join(mods)}.whitesmith_handlers"
+        if full_modname in HANDLERS:
+            break
+        try:
+            mod = importlib.import_module(full_modname)
+            router = RouterBuilder().build_router(mod)
+        except ImportError:
+            HANDLERS[full_modname] = None
+            mods.pop()
+        else:
+            HANDLERS[full_modname] = router
+            break
+
+    handler = HANDLERS.get(full_modname)
+    assert handler is not None, "no whitesmith_handlers fund, did you generates some?"
+    return handler
 
 
 @pytest.fixture()
