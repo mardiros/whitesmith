@@ -3,7 +3,7 @@ import sys
 from collections.abc import Sequence
 from pathlib import Path
 
-from .generate_handlers import generate_handlers
+from whitesmith.generate_handlers import generate_handlers
 
 
 def generate(outdir: str, resources_mod: Sequence[str], overwrite: bool) -> None:

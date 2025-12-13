@@ -8,7 +8,7 @@ from whitesmith import {{ ", ".join(context.whitesmith_imports) }}
 {{ import_lines }}
 {%- endfor %}
 
-{% for response_model in context.response_models %}
+{% for response_model in context.sorted_response_models %}
 from {{response_model.mod}} import {{response_model.name}}
 {%- endfor %}
 {%- for response_model in context.sorted_response_models %}

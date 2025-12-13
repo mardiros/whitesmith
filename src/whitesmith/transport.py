@@ -7,10 +7,14 @@ from blacksmith import (
     SyncAbstractTransport,
 )
 
-from .router import router
+from .router import Router
 
 
 class SyncFakeTransport(SyncAbstractTransport):
+    def __init__(self, router: Router):
+        super().__init__()
+        self.router = router
+
     def __call__(
         self,
         req: HTTPRequest,
@@ -21,7 +25,7 @@ class SyncFakeTransport(SyncAbstractTransport):
         """Process the HTTP request."""
         key = f"{req.method} {req.url.format(**req.path)}"
 
-        resp = router.handle(req)
+        resp = self.router.handle(req)
 
         if resp.status_code >= 400:
             raise HTTPError(
@@ -34,9 +38,9 @@ class SyncFakeTransport(SyncAbstractTransport):
 
 
 class AsyncFakeTransport(AsyncAbstractTransport):
-    def __init__(self) -> None:
+    def __init__(self, router: Router) -> None:
         super().__init__()
-        self._fake_transport = SyncFakeTransport()
+        self._fake_transport = SyncFakeTransport(router)
 
     async def __call__(
         self,

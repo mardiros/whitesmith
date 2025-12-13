@@ -25,6 +25,9 @@ generate handlers for tests.
 Usage
 -----
 
+Generating fixtures
+~~~~~~~~~~~~~~~~~~~
+
 ::
 
   whitesmith generate -m my_package.resources --out-dir tests/
@@ -39,12 +42,18 @@ handlers for all the api call with a default implementation.
     | To generate newer version, use the ``--overwrite`` flag.
 
 
-The command will generate also a `conftest.py` file containing two fixtures,
+Those fixtures can be adapted to get the result you want,
+they must be present in a whitesmith_handlers directory inside the tests suite.
 
-for sync and async version.
 
+Using the fixtures
+~~~~~~~~~~~~~~~~~~
 
-Tests that require those fixture are suppose to be created inside the whitesmith folder.
+The whitesmith package provide three pytest fixtures that can be used in the testsuite.
 
-To create the test elsewhere, you have to copy create your own fixtures by copy,
-pasting and adapting import path.
+The sync_blacksmith_client, async_blacksmith_client can be used to get
+a blacksmith client instance that use the installed fixtures from the generated
+directory.
+
+Both actually consume the undelying fixtures ``whitesmith_router`` is a generated
+fixture that contains all the routes contained in the ``whitesmith_handlers`` directory.
