@@ -1,6 +1,6 @@
 """Pytest plugin"""
 
-import sys
+import importlib
 from typing import Any
 
 import blacksmith
@@ -10,12 +10,17 @@ from whitesmith import Router
 from whitesmith.router import RouterBuilder
 from whitesmith.transport import AsyncFakeTransport, SyncFakeTransport
 
+HANDLERS: dict[str, Router] = {}
+
 
 @pytest.fixture()
 def whitesmith_router(request: pytest.FixtureRequest) -> Router:
     modname = request.module.__package__.split(".")[0]
-    mod = sys.modules[modname]
-    return RouterBuilder().build_router(mod)
+    modname = f"{modname}.whitesmith_handlers"
+    if modname not in HANDLERS:
+        mod = importlib.import_module(modname)
+        HANDLERS[modname] = RouterBuilder().build_router(mod)
+    return HANDLERS[modname]
 
 
 @pytest.fixture()
