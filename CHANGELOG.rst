@@ -1,3 +1,7 @@
+5.0.1 - Released on 2025-12-13
+------------------------------
+* Hotfix whitesmith router fixture for nested tests. 
+
 5.0.0 - Released on 2025-12-13
 ------------------------------
 * Upgrade to blacksmith 5.0
