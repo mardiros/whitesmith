@@ -8,8 +8,6 @@ from pydantic import BaseModel, Field
 
 env = Environment(loader=PackageLoader("whitesmith"), autoescape=False)
 handlers_template = env.get_template("handlers.jinja2")
-conftest_template = env.get_template("conftest.jinja2")
-fixtures_template = env.get_template("fixtures.jinja2")
 
 sd = blacksmith.SyncRouterDiscovery(
     service_url_fmt="http://{service}.{version}",
@@ -100,7 +98,8 @@ def generate_handlers(
 
     print("Generating mocks from blacksmith registry...")
 
-    outdir = outdir / "whitesmith"
+    outdir = outdir / "whitesmith_handlers"
+    outdir.mkdir(parents=True, exist_ok=True)
     for client, service in registry.client_service.items():
         service, resources = registry.get_service(client)
         endpoint = sd.get_endpoint(*service)
@@ -113,32 +112,12 @@ def generate_handlers(
                 endpoint, client, name, resource.collection, prefix="collection_"
             ).add_resource(endpoint, client, name, resource.resource)
 
-        outdir.mkdir(exist_ok=True)
         file_ = outdir / "__init__.py"
-        if overwrite or not (outdir / "__init__.py").exists():
-            print(f"Writing {file_}")
-            file_.write_text("")
-
-        file_ = outdir / "conftest.py"
-        if overwrite or not file_.exists():
-            conftest = conftest_template.render()
-            print(f"Writing {file_}")
-            file_.write_text(conftest)
-
-        file_ = outdir / "fixtures.py"
-        if overwrite or not file_.exists():
-            conftest = fixtures_template.render(context={"resources": resources_mod})
-            print(f"Writing {file_}")
-            file_.write_text(conftest)
-
-        (outdir / "handlers").mkdir(exist_ok=True)
-
-        file_ = outdir / "handlers" / "__init__.py"
         if overwrite or not file_.exists():
             print(f"Writing {file_}")
             file_.write_text("")
 
-        file_ = outdir / "handlers" / f"{client}.py"
+        file_ = outdir / f"{client}.py"
         if overwrite or not file_.exists():
             print(f"Writing {file_}")
             handler = handlers_template.render(context=context)

@@ -1,4 +1,4 @@
-default_test_suite := 'tests'
+default_test_suite := 'tests/unittests'
 package := 'whitesmith'
 
 install:
@@ -11,12 +11,12 @@ typecheck:
     uv run mypy src/ tests/
 
 functest:
-    rm -rf tests/whitesmith/conftest.py
-    rm -rf tests/whitesmith/fixtures.py
-    rm -rf tests/whitesmith/handlers/*
+    rm -rf tests/unittests/conftest.py
+    rm -rf tests/unittests/fixtures.py
+    rm -rf tests/unittests/handlers/*
     PYTHONPATH=. uv run whitesmith generate -m tests
-    uv run ruff check --fix tests/whitesmith/
-    uv run pytest -sxv tests/whitesmith/
+    uv run ruff check --fix tests/unittests/
+    uv run pytest -sxv tests/unittests/
 
 test: lint typecheck functest
 

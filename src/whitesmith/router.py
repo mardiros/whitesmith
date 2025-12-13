@@ -1,12 +1,18 @@
 from collections.abc import Callable, MutableMapping
+from types import ModuleType
 from typing import Any
 
+import venusian
 from blacksmith import HTTPRequest
 from blacksmith import HTTPResponse as BMResponse
+from blacksmith.typing import HTTPMethod
 
 from whitesmith import HTTPCollectionResponse, HTTPResponse
 
 Handler = Callable[[HTTPRequest], HTTPResponse[Any] | HTTPCollectionResponse[Any]]
+
+
+VENUSIAN_CATEGORY = "whitesmith"
 
 
 class Router:
@@ -26,29 +32,104 @@ class Router:
                 },
             )
 
-    def register(self, route: str) -> Callable[[Handler], Handler]:
-        meth, url = route.split(maxsplit=2)
+    def register(self, meth: HTTPMethod, url: str, fn: Handler) -> None:
+        self.routes[(meth, url)] = fn
 
-        def wrapper(fn: Handler) -> Handler:
-            self.routes[(meth, url)] = fn
-            return fn
 
-        return wrapper
+class RouterBuilder:
+    def __init__(self) -> None:
+        self.scanned: set[ModuleType] = set()
 
     def get(self, url: str) -> Callable[[Handler], Handler]:
-        return self.register(f"GET {url}")
+        def configure(wrapped: Handler) -> Handler:
+            def callback(scanner: venusian.Scanner, name: str, ob: Handler) -> None:
+                if not hasattr(scanner, "router"):
+                    return  # coverage: ignore
+                scanner.router.register("GET", url, wrapped)  # type: ignore
+
+            venusian.attach(wrapped, callback, category=VENUSIAN_CATEGORY)  # type: ignore
+            return wrapped
+
+        return configure
 
     def post(self, url: str) -> Callable[[Handler], Handler]:
-        return self.register(f"POST {url}")
+        def configure(wrapped: Handler) -> Handler:
+            def callback(scanner: venusian.Scanner, name: str, ob: Handler) -> None:
+                if not hasattr(scanner, "router"):
+                    return  # coverage: ignore
+                scanner.router.register("POST", url, wrapped)  # type: ignore
+
+            venusian.attach(wrapped, callback, category=VENUSIAN_CATEGORY)  # type: ignore
+            return wrapped
+
+        return configure
 
     def put(self, url: str) -> Callable[[Handler], Handler]:
-        return self.register(f"PUT {url}")
+        def configure(wrapped: Handler) -> Handler:
+            def callback(scanner: venusian.Scanner, name: str, ob: Handler) -> None:
+                if not hasattr(scanner, "router"):
+                    return  # coverage: ignore
+                scanner.router.register("PUT", url, wrapped)  # type: ignore
+
+            venusian.attach(wrapped, callback, category=VENUSIAN_CATEGORY)  # type: ignore
+            return wrapped
+
+        return configure
 
     def patch(self, url: str) -> Callable[[Handler], Handler]:
-        return self.register(f"PATCH {url}")
+        def configure(wrapped: Handler) -> Handler:
+            def callback(scanner: venusian.Scanner, name: str, ob: Handler) -> None:
+                if not hasattr(scanner, "router"):
+                    return  # coverage: ignore
+                scanner.router.register("PATCH", url, wrapped)  # type: ignore
+
+            venusian.attach(wrapped, callback, category=VENUSIAN_CATEGORY)  # type: ignore
+            return wrapped
+
+        return configure
 
     def delete(self, url: str) -> Callable[[Handler], Handler]:
-        return self.register(f"DELETE {url}")
+        def configure(wrapped: Handler) -> Handler:
+            def callback(scanner: venusian.Scanner, name: str, ob: Handler) -> None:
+                if not hasattr(scanner, "router"):
+                    return  # coverage: ignore
+                scanner.router.register("DELETE", url, wrapped)  # type: ignore
+
+            venusian.attach(wrapped, callback, category=VENUSIAN_CATEGORY)  # type: ignore
+            return wrapped
+
+        return configure
+
+    def options(self, url: str) -> Callable[[Handler], Handler]:
+        def configure(wrapped: Handler) -> Handler:
+            def callback(scanner: venusian.Scanner, name: str, ob: Handler) -> None:
+                if not hasattr(scanner, "router"):
+                    return  # coverage: ignore
+                scanner.router.register("OPTIONS", url, wrapped)  # type: ignore
+
+            venusian.attach(wrapped, callback, category=VENUSIAN_CATEGORY)  # type: ignore
+            return wrapped
+
+        return configure
+
+    def head(self, url: str) -> Callable[[Handler], Handler]:
+        def configure(wrapped: Handler) -> Handler:
+            def callback(scanner: venusian.Scanner, name: str, ob: Handler) -> None:
+                if not hasattr(scanner, "router"):
+                    return  # coverage: ignore
+                scanner.router.register("HEAD", url, wrapped)  # type: ignore
+
+            venusian.attach(wrapped, callback, category=VENUSIAN_CATEGORY)  # type: ignore
+            return wrapped
+
+        return configure
+
+    def build_router(self, mod: ModuleType) -> Router:
+        assert mod
+        router = Router()
+        scanner = venusian.Scanner(router=router)
+        scanner.scan(mod, categories=[VENUSIAN_CATEGORY])
+        return router
 
 
-router = Router()
+router = RouterBuilder()

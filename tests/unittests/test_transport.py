@@ -6,11 +6,20 @@ from blacksmith import (
     HTTPTimeout,
 )
 
+from whitesmith.router import Router, RouterBuilder
 from whitesmith.transport import AsyncFakeTransport, SyncFakeTransport
 
 
-def test_sync_transport_call():
-    resp = SyncFakeTransport()(
+@pytest.fixture
+def router() -> Router:
+    from tests import whitesmith_handlers
+
+    builder = RouterBuilder()
+    return builder.build_router(whitesmith_handlers)
+
+
+def test_sync_transport_call(router: Router):
+    resp = SyncFakeTransport(router)(
         HTTPRequest("POST", "http://notif.v2/notifications"),
         "notif",
         "/notifications",
@@ -19,9 +28,9 @@ def test_sync_transport_call():
     assert resp == HTTPResponse(status_code=200, headers={}, json=None)
 
 
-def test_sync_transport_call_error():
+def test_sync_transport_call_error(router: Router):
     with pytest.raises(HTTPError) as err:
-        SyncFakeTransport()(
+        SyncFakeTransport(router)(
             HTTPRequest("POST", "http://yolo.v1/"),
             "yolo",
             "/",
@@ -32,8 +41,8 @@ def test_sync_transport_call_error():
     }
 
 
-async def test_async_transport_call():
-    resp = await AsyncFakeTransport()(
+async def test_async_transport_call(router: Router):
+    resp = await AsyncFakeTransport(router)(
         HTTPRequest("POST", "http://notif.v2/notifications"),
         "notif",
         "/notifications",
@@ -42,9 +51,9 @@ async def test_async_transport_call():
     assert resp == HTTPResponse(status_code=200, headers={}, json=None)
 
 
-async def test_async_transport_call_error():
+async def test_async_transport_call_error(router: Router):
     with pytest.raises(HTTPError) as err:
-        await AsyncFakeTransport()(
+        await AsyncFakeTransport(router)(
             HTTPRequest("POST", "http://yolo.v1/"),
             "yolo",
             "/",

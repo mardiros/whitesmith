@@ -47,7 +47,7 @@ def test_generate_handlers_context():
     }
     assert context.has_missing_schema is False
     assert context.response_models == {
-        ResponseModel(mod="tests.whitesmith.test_generate", name="Phone"),
+        ResponseModel(mod="tests.unittests.test_generate", name="Phone"),
     }
     assert context.routes == [
         Route(
@@ -78,7 +78,7 @@ def test_generate_collection_handlers():
     }
     assert context.has_missing_schema is False
     assert context.response_models == {
-        ResponseModel(mod="tests.whitesmith.test_generate", name="Phone"),
+        ResponseModel(mod="tests.unittests.test_generate", name="Phone"),
     }
     assert context.routes == [
         Route(
@@ -118,8 +118,6 @@ def test_generate_handlers_missing_return_schema():
 
 
 def test_generate_handlers(tmp_path: Path):
-    generate_handlers(tmp_path, ["tests.whitesmith.handlers"], overwrite=True)
-    files = {f.name: f.read_text() for f in tmp_path.glob("whitesmith/*.py")}
-    assert files.keys() == {"__init__.py", "conftest.py", "fixtures.py"}
-    files = {f.name: f.read_text() for f in tmp_path.glob("whitesmith/handlers/*.py")}
+    generate_handlers(tmp_path, ["tests.whitesmith_handlers"], overwrite=True)
+    files = {f.name: f.read_text() for f in tmp_path.glob("whitesmith_handlers/*.py")}
     assert files.keys() == {"__init__.py", "address.py", "notif.py", "organization.py"}
