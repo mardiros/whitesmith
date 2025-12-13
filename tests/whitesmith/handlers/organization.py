@@ -11,18 +11,16 @@ class PartialUserFactory(ModelFactory[PartialUser]):
     __model__ = PartialUser
 
 
-class UserFactory(ModelFactory[User]):
-    __model__ = User
-
-
 class UserCreatedFactory(ModelFactory[UserCreated]):
     __model__ = UserCreated
 
 
+class UserFactory(ModelFactory[User]):
+    __model__ = User
+
+
 @router.get("http://organization.v5/users")
-def organization_users_collection_get(
-    req: HTTPRequest,
-) -> HTTPCollectionResponse[PartialUser]:
+def organization_users_collection_get(req: HTTPRequest) -> HTTPCollectionResponse[PartialUser]:
     return HTTPCollectionResponse([PartialUserFactory.build()])
 
 
