@@ -22,6 +22,10 @@ functest functests=functional_test_suite:
 
 test: lint typecheck functest
 
+genopenapi:
+    PYTHONPATH=. uv run whitesmith generate-openapi -m tests.resources -o tests/openapis --overwrite
+    cd tests/openapis/ && python -m http.server 8000
+
 lf:
     uv run pytest -sxvvv --lf
 

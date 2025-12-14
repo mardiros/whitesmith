@@ -1,14 +1,9 @@
 import argparse
 import sys
 from collections.abc import Sequence
-from pathlib import Path
 
 from whitesmith.generate_handlers import generate_handlers
-
-
-def generate(outdir: str, resources_mod: Sequence[str], overwrite: bool) -> None:
-    outpath = Path(outdir)
-    generate_handlers(outpath, resources_mod, overwrite)
+from whitesmith.generate_openapis import generate_openapis
 
 
 def main(args: Sequence[str] = sys.argv) -> None:
@@ -36,7 +31,30 @@ def main(args: Sequence[str] = sys.argv) -> None:
         nargs="+",
         help="blacksmith resource module to scan",
     )
-    sp_action.set_defaults(handler=generate)
+    sp_action.set_defaults(handler=generate_handlers)
+
+    sp_action = subparsers.add_parser("generate-openapi")
+    sp_action.add_argument(
+        "-o",
+        "--out-dir",
+        dest="outdir",
+        default="tests",
+        help="Directory where the schemas will be generated",
+    )
+    sp_action.add_argument(
+        "--overwrite", action="store_true", dest="overwrite", default=False
+    )
+
+    sp_action.add_argument(
+        "-m",
+        "--resource-module",
+        dest="resources_mod",
+        required=True,
+        nargs="+",
+        help="blacksmith resource module to scan",
+    )
+    sp_action.set_defaults(handler=generate_openapis)
+
     kwargs = parser.parse_args(args[1:])
     kwargs_dict = vars(kwargs)
     handler = kwargs_dict.pop("handler")

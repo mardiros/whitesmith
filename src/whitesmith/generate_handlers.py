@@ -14,10 +14,6 @@ sd = blacksmith.SyncRouterDiscovery(
     unversioned_service_url_fmt="http://{service}.NaN",
 )
 
-cli: blacksmith.SyncClientFactory[blacksmith.HTTPError] = blacksmith.SyncClientFactory(
-    sd=sd
-)
-
 
 def import_pydantic_factory() -> str:
     return "from polyfactory.factories.pydantic_factory import ModelFactory"
@@ -92,8 +88,9 @@ class HandlerTemplateContext(BaseModel):
 
 
 def generate_handlers(
-    outdir: Path, resources_mod: Sequence[str], overwrite: bool
+    outdir: str | Path, resources_mod: Sequence[str], overwrite: bool
 ) -> None:
+    outdir = Path(outdir)
     blacksmith.scan(*resources_mod)
 
     print("Generating mocks from blacksmith registry...")
