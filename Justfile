@@ -45,10 +45,10 @@ release major_minor_patch: && changelog
 
 changelog:
     uv run python scripts/write_changelog.py
-    cat CHANGELOG.rst >> CHANGELOG.rst.new
-    rm CHANGELOG.rst
-    mv CHANGELOG.rst.new CHANGELOG.rst
-    $EDITOR CHANGELOG.rst
+    cat CHANGELOG.md >> CHANGELOG.md.new
+    rm CHANGELOG.md
+    mv CHANGELOG.md.new CHANGELOG.md
+    $EDITOR CHANGELOG.md
 
 
 publish:
