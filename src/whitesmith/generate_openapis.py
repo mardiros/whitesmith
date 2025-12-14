@@ -10,6 +10,11 @@ from pydantic import BaseModel, Field
 env = Environment(loader=PackageLoader("whitesmith"), autoescape=False)
 redoc_template = env.get_template("redoc.jinja2")
 
+sd = blacksmith.SyncRouterDiscovery(
+    service_url_fmt="http://{service}.{version}",
+    unversioned_service_url_fmt="http://{service}.NaN",
+)
+
 
 JSONSchema = dict[str, Any]
 
@@ -51,11 +56,17 @@ class Info(BaseModel):
     version: str
 
 
+class Server(BaseModel):
+    url: str
+    description: str | None = None
+
+
 class OpenAPIDocument(BaseModel):
     openapi: str = "3.1.0"
     info: Info
     paths: dict[str, dict[str, Operation]] = Field(default_factory=dict)
     components: Components = Field(default_factory=Components)
+    servers: list[Server] = Field(default_factory=list)
 
 
 def request_schema_to_parameter(request: type[blacksmith.Request]) -> list[Parameter]:
@@ -136,13 +147,20 @@ def generate_openapis(
     services = []
     for client, service in registry.client_service.items():
         service, resources = registry.get_service(client)
+        endpoint = sd.get_endpoint(*service)
 
         print(f"Processing client {client}...")
         openapi = OpenAPIDocument(
             info=Info(
                 title=f"{client} for service {service[0]}",
                 version=service[1] or "unversionned",
-            )
+            ),
+            servers=[
+                Server(
+                    url=endpoint,
+                    description="Client Contract Testing",
+                )
+            ],
         )
         for name, resource in resources.items():
             print(f"Prosessing {name}...")
@@ -163,7 +181,12 @@ def generate_openapis(
 
         file_ = outdir / f"{client}.json"
         services.append(
-            {"file": f"/{client}.json", "name": client, "id": client.replace(" ", "-")}
+            {
+                "file": f"/{client}.json",
+                "name": client,
+                "id": client.replace(" ", "-"),
+                "endpoint": endpoint,
+            }
         )
         if overwrite or not file_.exists():
             print(f"Writing {file_}")
