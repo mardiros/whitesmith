@@ -5,6 +5,7 @@ docs/_build
 .vscode
 .pytest_cache
 .coverage
+tests/openapis
 junit
 htmlcov
 coverage.xml

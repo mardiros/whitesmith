@@ -92,8 +92,9 @@ class HandlerTemplateContext(BaseModel):
 
 
 def generate_handlers(
-    outdir: Path, resources_mod: Sequence[str], overwrite: bool
+    outdir: str | Path, resources_mod: Sequence[str], overwrite: bool
 ) -> None:
+    outdir = Path(outdir)
     blacksmith.scan(*resources_mod)
 
     print("Generating mocks from blacksmith registry...")
