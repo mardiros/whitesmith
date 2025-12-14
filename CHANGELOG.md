@@ -1,3 +1,7 @@
+## 5.1.0 - Released on 2025-12-14
+* Add a new subcommand whitesmith generate-openapi that generate
+  open api json files and html based on redoc. 
+
 ## 5.0.1 - Released on 2025-12-13
 * Hotfix whitesmith router fixture for nested tests.
 
