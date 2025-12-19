@@ -53,7 +53,6 @@ class Dog(Response):
                         "in": "path",
                         "required": True,
                         "schema": {
-                            "location": "path",
                             "title": "Phonenumber",
                             "type": "string",
                         },
@@ -67,7 +66,6 @@ class Dog(Response):
                         "schema": {
                             "anyOf": [{"type": "string"}, {"type": "null"}],
                             "default": None,
-                            "location": "query",
                             "title": "Country",
                         },
                     }
