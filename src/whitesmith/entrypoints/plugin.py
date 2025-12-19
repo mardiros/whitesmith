@@ -35,8 +35,6 @@ def whitesmith_router(request: pytest.FixtureRequest) -> Router:
             break
 
     handler = HANDLERS.get(full_modname)
-    if handler is None:
-        breakpoint()
     assert handler is not None, "no whitesmith_handlers fund, did you generates some?"
     return handler
 

@@ -16,7 +16,7 @@ readme = "README.md"
 
 dependencies = [
     "Jinja2 >=3.1.2,<4",
-    "blacksmith >=5.0.0,<6",
+    "blacksmith >=5.0.1,<6",
     "polyfactory >=2.14.0,<3",
     "pydantic >=2.6.0,<3",
     "venusian >=3.1.1,<4",

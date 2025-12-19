@@ -5,6 +5,13 @@ package := 'whitesmith'
 install:
     uv sync --group dev
 
+upgrade: && update
+    uv lock --upgrade
+
+update:
+    #!/bin/bash
+    uv sync --all-groups
+
 lint:
     uv run ruff check .
 
@@ -20,7 +27,7 @@ functest functests=functional_test_suite:
     uv run ruff check --fix tests/whitesmith_handlers/
     uv run pytest -sxv {{functests}}
 
-test: lint typecheck functest
+test: lint typecheck unittests functest
 
 genopenapi:
     PYTHONPATH=. uv run whitesmith generate-openapi -m tests.resources -o tests/openapis --overwrite

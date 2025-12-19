@@ -47,7 +47,7 @@ def test_generate_handlers_context():
     }
     assert context.has_missing_schema is False
     assert context.response_models == {
-        ResponseModel(mod="tests.unittests.test_generate", name="Phone"),
+        ResponseModel(mod="tests.unittests.test_generate_handlers", name="Phone"),
     }
     assert context.routes == [
         Route(
@@ -78,7 +78,7 @@ def test_generate_collection_handlers():
     }
     assert context.has_missing_schema is False
     assert context.response_models == {
-        ResponseModel(mod="tests.unittests.test_generate", name="Phone"),
+        ResponseModel(mod="tests.unittests.test_generate_handlers", name="Phone"),
     }
     assert context.routes == [
         Route(
