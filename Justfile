@@ -5,6 +5,13 @@ package := 'whitesmith'
 install:
     uv sync --group dev
 
+upgrade: && update
+    uv lock --upgrade
+
+update:
+    #!/bin/bash
+    uv sync --all-groups
+
 lint:
     uv run ruff check .
 

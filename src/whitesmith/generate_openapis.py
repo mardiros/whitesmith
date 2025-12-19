@@ -5,7 +5,8 @@ from typing import Any
 import blacksmith
 from blacksmith.domain.registry import HttpResource, registry
 from jinja2 import Environment, PackageLoader
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, create_model
+from pydantic_core import PydanticUndefined
 
 env = Environment(loader=PackageLoader("whitesmith"), autoescape=False)
 redoc_template = env.get_template("redoc.jinja2")
@@ -31,7 +32,7 @@ class MediaType(BaseModel):
 
 
 class Content(BaseModel):
-    application_json: MediaType = Field(default=None, alias="application/json")
+    application_json: MediaType | None = Field(default=None, alias="application/json")
 
 
 class Response(BaseModel):
@@ -39,11 +40,20 @@ class Response(BaseModel):
     content: Content | None = Field(default=None)
 
 
+class RequestBody(BaseModel):
+    description: str | None = Field(default=None)
+    required: bool = Field(default=False)
+    content: Content | None = Field(default=None)
+
+
 class Operation(BaseModel):
     operationId: str
+    summary: str
     parameters: list[Parameter] = Field(default_factory=list)
     responses: dict[str, Response]
-    summary: str
+    requestBody: RequestBody | None = (
+        None  # Optional, for POST/PUT bodies    summary: str
+    )
     tags: list[str]
 
 
@@ -69,20 +79,56 @@ class OpenAPIDocument(BaseModel):
     servers: list[Server] = Field(default_factory=list)
 
 
-def request_schema_to_parameter(request: type[blacksmith.Request]) -> list[Parameter]:
+def request_schema_to_parameter(
+    request: type[blacksmith.Request],
+) -> tuple[list[Parameter], RequestBody | None, dict[str, JSONSchema]]:
     params: list[Parameter] = []
     json_schemas = request.model_json_schema()
+    postbody_required = False
+    postbody: dict[str, Any] = {}
     for name, field in request.model_fields.items():
-        param = Parameter.model_validate(
-            {
-                "name": field.alias or name,
-                "in": field.json_schema_extra["location"],  # type: ignore
-                # "required": field.is_required,
-                "schema": json_schemas["properties"][name],
-            }
+        match field.json_schema_extra["location"]:  # type: ignore
+            case "querystring" | "headers" | "path":
+                param = Parameter.model_validate(
+                    {
+                        "name": field.alias or name,
+                        "in": field.json_schema_extra["location"],  # type: ignore
+                        "required": field.is_required(),
+                        "schema": json_schemas["properties"][name],
+                    }
+                )
+                params.append(param)
+            case "body":
+                field_type = field.annotation
+                if field.default is not PydanticUndefined:
+                    postbody[name] = (field_type, field.default)
+                elif field.default_factory is not None:
+                    postbody[name] = (field_type, field.default_factory)
+                else:
+                    postbody[name] = field_type
+                postbody_required = postbody_required or field.is_required()
+            case _:
+                # what to do with attachement
+                pass
+    schemas = {}
+    request_body: RequestBody | None = None
+    if postbody:
+        schema_name = f"{request.__qualname__}RequestBody"
+        model = create_model(schema_name, **postbody)  # type: ignore
+        schemas[schema_name] = model.model_json_schema()
+        request_body = RequestBody(
+            description=request.__doc__ or request.__qualname__,
+            required=postbody_required,
+            content=Content.model_validate(
+                {
+                    # we should read something for the accepted content type
+                    "application/json": MediaType(
+                        schema={"$ref": f"#/components/schemas/{schema_name}"}
+                    ),
+                }
+            ),
         )
-        params.append(param)
-    return params
+    return params, request_body, schemas
 
 
 def response_schema_to_responses(
@@ -122,6 +168,8 @@ def add_resource(
     if resource.contract:
         for http_method, schemas in resource.contract.items():
             method = http_method.lower()
+            parameters, req_body, req_schemas = request_schema_to_parameter(schemas[0])
+            openapi.components.schemas.update(req_schemas)
             responses, resp_schemas = response_schema_to_responses(schemas[1])
             openapi.components.schemas.update(resp_schemas)
             if resource.path not in openapi.paths:
@@ -129,7 +177,8 @@ def add_resource(
             openapi.paths[resource.path][method] = Operation(
                 operationId=f"{client}_{method}_{resource_name}",
                 summary=summary,
-                parameters=request_schema_to_parameter(schemas[0]),
+                parameters=parameters,
+                requestBody=req_body,
                 responses=responses,
                 tags=tags,
             )
