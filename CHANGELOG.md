@@ -1,3 +1,7 @@
+## 5.1.1 - Released on 2025-12-19
+* Fix generate-openapi: use proper swager name for locations.
+* Add support of union type for generate-openapi command.
+
 ## 5.1.0 - Released on 2025-12-14
 * Add a new subcommand whitesmith generate-openapi that generate
   open api json files and html based on redoc. 
