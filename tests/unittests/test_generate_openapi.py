@@ -88,7 +88,8 @@ class Dog(Response):
                         "application/json": MediaType.model_validate(
                             {
                                 "schema": {
-                                    "$ref": "#/components/schemas/CreateCatRequestBody"
+                                    "$ref": "#/components/schemas/"
+                                    "tests_unittests_test_generate_openapi__CreateCat"
                                 }
                             }
                         )
@@ -96,7 +97,7 @@ class Dog(Response):
                 ),
             ),
             {
-                "CreateCatRequestBody": {
+                "tests_unittests_test_generate_openapi__CreateCat": {
                     "properties": {
                         "meows": {
                             "title": "Meows",
@@ -112,7 +113,7 @@ class Dog(Response):
                         "pet_type",
                         "meows",
                     ],
-                    "title": "CreateCatRequestBody",
+                    "title": "tests_unittests_test_generate_openapi__CreateCat",
                     "type": "object",
                 }
             },
@@ -132,11 +133,13 @@ class Dog(Response):
                                     "oneOf": [
                                         {
                                             "$ref": "#/components/schemas/"
-                                            "CreateCatRequestBody"
+                                            "tests_unittests_test_generate_openapi__"
+                                            "CreateCat"
                                         },
                                         {
                                             "$ref": "#/components/schemas/"
-                                            "CreateDogRequestBody"
+                                            "tests_unittests_test_generate_openapi__"
+                                            "CreateDog"
                                         },
                                     ]
                                 }
@@ -146,7 +149,7 @@ class Dog(Response):
                 ),
             ),
             {
-                "CreateCatRequestBody": {
+                "tests_unittests_test_generate_openapi__CreateCat": {
                     "properties": {
                         "meows": {
                             "title": "Meows",
@@ -162,10 +165,10 @@ class Dog(Response):
                         "pet_type",
                         "meows",
                     ],
-                    "title": "CreateCatRequestBody",
+                    "title": "tests_unittests_test_generate_openapi__CreateCat",
                     "type": "object",
                 },
-                "CreateDogRequestBody": {
+                "tests_unittests_test_generate_openapi__CreateDog": {
                     "properties": {
                         "barks": {
                             "title": "Barks",
@@ -181,7 +184,7 @@ class Dog(Response):
                         "pet_type",
                         "barks",
                     ],
-                    "title": "CreateDogRequestBody",
+                    "title": "tests_unittests_test_generate_openapi__CreateDog",
                     "type": "object",
                 },
             },

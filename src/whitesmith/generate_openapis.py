@@ -81,6 +81,11 @@ class OpenAPIDocument(BaseModel):
     servers: list[Server] = Field(default_factory=list)
 
 
+def get_name(typ: type[Any]) -> str:
+    schema_name = f"{typ.__module__}__{typ.__qualname__}"
+    return schema_name.replace(".", "_")
+
+
 def request_schema_to_params(
     request: type[blacksmith.Request],
 ) -> tuple[list[Parameter], RequestBody | None, dict[str, JSONSchema]]:
@@ -143,7 +148,7 @@ def request_schema_to_params(
     schemas = {}
     request_body: RequestBody | None = None
     if postbody:
-        schema_name = f"{request.__qualname__}RequestBody"
+        schema_name = get_name(request)
         model = create_model(schema_name, **postbody)  # type: ignore
         schemas[schema_name] = model.model_json_schema()
         request_body = RequestBody(
@@ -222,7 +227,7 @@ def response_schema_to_responses(
     if response is None:
         responses[HttpStatus("204")] = OperationResponse(description="No Content")
     else:
-        schema_name = f"{response.__module__}__{response.__qualname__}"
+        schema_name = get_name(response)
         schema_name = schema_name.replace(".", "_")
         responses[HttpStatus("200")] = OperationResponse(
             description=response.__doc__ or response.__name__,
