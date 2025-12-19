@@ -80,16 +80,16 @@ class OpenAPIDocument(BaseModel):
     servers: list[Server] = Field(default_factory=list)
 
 
-def request_schema_to_parameter(
+def request_schema_to_params(
     request: type[blacksmith.Request],
 ) -> tuple[list[Parameter], RequestBody | None, dict[str, JSONSchema]]:
     if is_union(request):
         args_ = get_args(request)
-        allparams = {}
-        allschemas = {}
-        allschemarefs = {"oneOf": []}
-        request_body = RequestBody(
-            description=request.__doc__ or request.__qualname__,
+        allparams: dict[str, Parameter] = {}
+        allschemas: dict[str, JSONSchema] = {}
+        allschemarefs: dict[str, list[JSONSchema]] = {"oneOf": []}
+        union_request_body = RequestBody(
+            description=", ".join([argg.__doc__ or argg.__name__ for argg in args_]),
             required=False,
             content=Content.model_validate(
                 {
@@ -98,13 +98,18 @@ def request_schema_to_parameter(
                 }
             ),
         )
-        for args in args_:
-            cparams, creq, cschemas = request_schema_to_parameter(args)
+        for argg in args_:
+            cparams, creq, cschemas = request_schema_to_params(argg)
+            if creq and creq.required:
+                union_request_body.required = True
             # fix the override of schema here
             allparams.update({p.name: p for p in cparams})
             allschemas.update(cschemas)
-            allschemarefs["oneOf"].append(creq.content.application_json.schema_)
-        return list(allparams.values()), request_body, allschemas
+            if content := creq and creq.content:
+                if media := content.application_json:
+                    if media.schema_ is not None:
+                        allschemarefs["oneOf"].append(media.schema_)
+        return list(allparams.values()), union_request_body, allschemas
 
     params: list[Parameter] = []
     json_schemas = request.model_json_schema()
@@ -192,7 +197,7 @@ def add_resource(
     if resource.contract:
         for http_method, schemas in resource.contract.items():
             method = http_method.lower()
-            parameters, req_body, req_schemas = request_schema_to_parameter(schemas[0])
+            parameters, req_body, req_schemas = request_schema_to_params(schemas[0])
             openapi.components.schemas.update(req_schemas)
             responses, resp_schemas = response_schema_to_responses(schemas[1])
             openapi.components.schemas.update(resp_schemas)

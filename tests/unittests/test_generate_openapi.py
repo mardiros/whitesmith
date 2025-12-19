@@ -2,13 +2,15 @@ from typing import Literal
 
 import pytest
 from blacksmith import PathInfoField, PostBodyField, QueryStringField, Request
+from blacksmith.domain.model import Response
 
 from whitesmith.generate_openapis import (
     Content,
     MediaType,
     Parameter,
     RequestBody,
-    request_schema_to_parameter,
+    request_schema_to_params,
+    response_schema_to_responses,
 )
 
 
@@ -104,7 +106,7 @@ class Dog(Request):
             Cat | Dog,
             [],
             RequestBody(
-                description="Cat",
+                description="Cat, Dog",
                 required=True,
                 content=Content.model_validate(
                     {
@@ -166,13 +168,13 @@ class Dog(Request):
         pytest.param(Request, [], None, {}, id="empty request"),
     ],
 )
-def test_request_schema_to_parameter(
+def test_request_schema_to_params(
     req: type[Request],
     expected_parameters: list[Parameter],
     expected_request_body: RequestBody,
     expected_schemas: dict[str, Content],
 ):
-    assert request_schema_to_parameter(req) == (
+    assert request_schema_to_params(req) == (
         expected_parameters,
         expected_request_body,
         expected_schemas,
