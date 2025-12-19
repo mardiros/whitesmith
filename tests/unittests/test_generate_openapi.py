@@ -62,12 +62,12 @@ class Dog(Response):
                 Parameter.model_validate(
                     {
                         "name": "country",
-                        "in": "querystring",
+                        "in": "query",
                         "required": False,
                         "schema": {
                             "anyOf": [{"type": "string"}, {"type": "null"}],
                             "default": None,
-                            "location": "querystring",
+                            "location": "query",
                             "title": "Country",
                         },
                     }

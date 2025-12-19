@@ -123,7 +123,7 @@ def request_schema_to_params(
     postbody: dict[str, Any] = {}
     for name, field in request.model_fields.items():
         match field.json_schema_extra["location"]:  # type: ignore
-            case "querystring" | "headers" | "path":
+            case "query" | "header" | "path":
                 param = Parameter.model_validate(
                     {
                         "name": field.alias or name,

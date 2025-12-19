@@ -36,7 +36,7 @@ wheels = [
 
 [[package]]
 name = "blacksmith"
-version = "5.0.0"
+version = "5.0.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "httpx" },
@@ -44,9 +44,9 @@ dependencies = [
     { name = "pydantic" },
     { name = "result" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/33/74/9327ae29424a388225f45915d6dab06f5ffc59eb93142283b9efa0b51440/blacksmith-5.0.0.tar.gz", hash = "sha256:0695c9588bcfcaa6191a0f5318f053e3168e0bb47be7e4fcc7159a823ad0dd81", size = 35496, upload-time = "2025-12-13T08:59:11.94Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/f0/ab/e89149d394c7998449de2f88fa1089b2ba7accde6a2f05f3800bba0fe120/blacksmith-5.0.1.tar.gz", hash = "sha256:ba262f814b9dea446013dcbf584b4a2a7f7f78802f5ae183c8d42a8781807aaa", size = 35546, upload-time = "2025-12-19T22:06:06.063Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/d6/04/49e4791538be7cfc750e5f7bc58620e22fbe813b906b7f785f45683cbbb0/blacksmith-5.0.0-py3-none-any.whl", hash = "sha256:30f9b64d3a9eb5f98ed6f80092afd8ad9506667c37b7ed6fdba0ff0a81f2e059", size = 63404, upload-time = "2025-12-13T08:59:10.601Z" },
+    { url = "https://files.pythonhosted.org/packages/35/0a/15a1433de8927dd4ce73cf693afcecb8c0b1496702834d9aa6c82059644d/blacksmith-5.0.1-py3-none-any.whl", hash = "sha256:b2e75b548a05204badc21421a4a6567235a1ac5abd2a81f61a40c8b9e18038f2", size = 63409, upload-time = "2025-12-19T22:06:04.679Z" },
 ]
 
 [[package]]
@@ -831,7 +831,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "blacksmith", specifier = ">=5.0.0,<6" },
+    { name = "blacksmith", specifier = ">=5.0.1,<6" },
     { name = "jinja2", specifier = ">=3.1.2,<4" },
     { name = "polyfactory", specifier = ">=2.14.0,<3" },
     { name = "pydantic", specifier = ">=2.6.0,<3" },
