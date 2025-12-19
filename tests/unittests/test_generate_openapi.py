@@ -3,10 +3,12 @@ from typing import Literal
 import pytest
 from blacksmith import PathInfoField, PostBodyField, QueryStringField, Request
 from blacksmith.domain.model import Response
+from pydantic import Field
 
 from whitesmith.generate_openapis import (
     Content,
     MediaType,
+    OperationResponse,
     Parameter,
     RequestBody,
     request_schema_to_params,
@@ -19,14 +21,24 @@ class GetPhone(Request):
     country: str | None = QueryStringField(None)
 
 
-class Cat(Request):
+class CreateCat(Request):
     pet_type: Literal["cat"] = PostBodyField()
     meows: int = PostBodyField()
 
 
-class Dog(Request):
+class CreateDog(Request):
     pet_type: Literal["dog"] = PostBodyField()
     barks: float = PostBodyField()
+
+
+class Cat(Response):
+    pet_type: Literal["cat"] = Field()
+    meows: int = Field()
+
+
+class Dog(Response):
+    pet_type: Literal["dog"] = Field()
+    barks: float = Field()
 
 
 @pytest.mark.parametrize(
@@ -66,21 +78,25 @@ class Dog(Request):
             id="Request with parameters",
         ),
         pytest.param(
-            Cat,
+            CreateCat,
             [],
             RequestBody(
-                description="Cat",
+                description="CreateCat",
                 required=True,
                 content=Content.model_validate(
                     {
                         "application/json": MediaType.model_validate(
-                            {"schema": {"$ref": "#/components/schemas/CatRequestBody"}}
+                            {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CreateCatRequestBody"
+                                }
+                            }
                         )
                     }
                 ),
             ),
             {
-                "CatRequestBody": {
+                "CreateCatRequestBody": {
                     "properties": {
                         "meows": {
                             "title": "Meows",
@@ -96,17 +112,17 @@ class Dog(Request):
                         "pet_type",
                         "meows",
                     ],
-                    "title": "CatRequestBody",
+                    "title": "CreateCatRequestBody",
                     "type": "object",
                 }
             },
             id="Request with body",
         ),
         pytest.param(
-            Cat | Dog,
+            CreateCat | CreateDog,
             [],
             RequestBody(
-                description="Cat, Dog",
+                description="CreateCat, CreateDog",
                 required=True,
                 content=Content.model_validate(
                     {
@@ -114,8 +130,14 @@ class Dog(Request):
                             {
                                 "schema": {
                                     "oneOf": [
-                                        {"$ref": "#/components/schemas/CatRequestBody"},
-                                        {"$ref": "#/components/schemas/DogRequestBody"},
+                                        {
+                                            "$ref": "#/components/schemas/"
+                                            "CreateCatRequestBody"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/"
+                                            "CreateDogRequestBody"
+                                        },
                                     ]
                                 }
                             }
@@ -124,7 +146,7 @@ class Dog(Request):
                 ),
             ),
             {
-                "CatRequestBody": {
+                "CreateCatRequestBody": {
                     "properties": {
                         "meows": {
                             "title": "Meows",
@@ -140,10 +162,10 @@ class Dog(Request):
                         "pet_type",
                         "meows",
                     ],
-                    "title": "CatRequestBody",
+                    "title": "CreateCatRequestBody",
                     "type": "object",
                 },
-                "DogRequestBody": {
+                "CreateDogRequestBody": {
                     "properties": {
                         "barks": {
                             "title": "Barks",
@@ -159,7 +181,7 @@ class Dog(Request):
                         "pet_type",
                         "barks",
                     ],
-                    "title": "DogRequestBody",
+                    "title": "CreateDogRequestBody",
                     "type": "object",
                 },
             },
@@ -177,5 +199,134 @@ def test_request_schema_to_params(
     assert request_schema_to_params(req) == (
         expected_parameters,
         expected_request_body,
+        expected_schemas,
+    )
+
+
+@pytest.mark.parametrize(
+    "resp,expected_responses,expected_schemas",
+    [
+        pytest.param(
+            Cat,
+            {
+                "200": OperationResponse(
+                    description="Cat",
+                    content=Content.model_validate(
+                        {
+                            "application/json": MediaType.model_validate(
+                                {
+                                    "schema": {
+                                        "$ref": "#/components/schemas/"
+                                        "tests_unittests_test_generate_openapi__Cat"
+                                    }
+                                }
+                            )
+                        }
+                    ),
+                )
+            },
+            {
+                "tests_unittests_test_generate_openapi__Cat": {
+                    "properties": {
+                        "meows": {
+                            "title": "Meows",
+                            "type": "integer",
+                        },
+                        "pet_type": {
+                            "const": "cat",
+                            "title": "Pet Type",
+                            "type": "string",
+                        },
+                    },
+                    "required": [
+                        "pet_type",
+                        "meows",
+                    ],
+                    "title": "Cat",
+                    "type": "object",
+                },
+            },
+            id="Response Body",
+        ),
+        pytest.param(
+            Cat | Dog,
+            {
+                "200": OperationResponse(
+                    description="Cat, Dog",
+                    content=Content.model_validate(
+                        {
+                            "application/json": MediaType.model_validate(
+                                {
+                                    "schema": {
+                                        "oneOf": [
+                                            {
+                                                "$ref": "#/components/schemas/"
+                                                "tests_unittests_test_generate_openapi"
+                                                "__Cat"
+                                            },
+                                            {
+                                                "$ref": "#/components/schemas/"
+                                                "tests_unittests_test_generate_openapi"
+                                                "__Dog"
+                                            },
+                                        ]
+                                    }
+                                }
+                            )
+                        }
+                    ),
+                )
+            },
+            {
+                "tests_unittests_test_generate_openapi__Cat": {
+                    "properties": {
+                        "meows": {
+                            "title": "Meows",
+                            "type": "integer",
+                        },
+                        "pet_type": {
+                            "const": "cat",
+                            "title": "Pet Type",
+                            "type": "string",
+                        },
+                    },
+                    "required": [
+                        "pet_type",
+                        "meows",
+                    ],
+                    "title": "Cat",
+                    "type": "object",
+                },
+                "tests_unittests_test_generate_openapi__Dog": {
+                    "properties": {
+                        "barks": {
+                            "title": "Barks",
+                            "type": "number",
+                        },
+                        "pet_type": {
+                            "const": "dog",
+                            "title": "Pet Type",
+                            "type": "string",
+                        },
+                    },
+                    "required": [
+                        "pet_type",
+                        "barks",
+                    ],
+                    "title": "Dog",
+                    "type": "object",
+                },
+            },
+            id="Union Body",
+        ),
+    ],
+)
+def test_response_schema_to_responses(
+    resp: type[Response],
+    expected_responses: dict[str, Response],
+    expected_schemas: dict[str, Content],
+):
+    assert response_schema_to_responses(resp) == (
+        expected_responses,
         expected_schemas,
     )

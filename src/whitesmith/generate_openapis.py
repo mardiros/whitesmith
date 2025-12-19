@@ -1,6 +1,6 @@
 from collections.abc import Sequence
 from pathlib import Path
-from typing import Any, get_args
+from typing import Any, NewType, get_args
 
 import blacksmith
 from blacksmith.domain.registry import HttpResource, registry
@@ -18,6 +18,7 @@ sd = blacksmith.SyncRouterDiscovery(
 )
 
 
+HttpStatus = NewType("HttpStatus", str)
 JSONSchema = dict[str, Any]
 
 
@@ -36,7 +37,7 @@ class Content(BaseModel):
     application_json: MediaType | None = Field(default=None, alias="application/json")
 
 
-class Response(BaseModel):
+class OperationResponse(BaseModel):
     description: str = Field(default="OK")
     content: Content | None = Field(default=None)
 
@@ -51,7 +52,7 @@ class Operation(BaseModel):
     operationId: str
     summary: str
     parameters: list[Parameter] = Field(default_factory=list)
-    responses: dict[str, Response]
+    responses: dict[HttpStatus, OperationResponse]
     requestBody: RequestBody | None = (
         None  # Optional, for POST/PUT bodies    summary: str
     )
@@ -160,23 +161,76 @@ def request_schema_to_params(
     return params, request_body, schemas
 
 
+def get_schema(
+    resp: dict[HttpStatus, OperationResponse], status: HttpStatus
+) -> JSONSchema | None:
+    if resp.get(status) is None:
+        return None
+    operresp = resp[status]
+    if operresp.content is None:
+        return None
+    content = operresp.content
+    if content.application_json is None:
+        return None
+    appjson = content.application_json
+    return appjson.schema_
+
+
 def response_schema_to_responses(
     response: type[blacksmith.Response] | None,
-) -> tuple[dict[str, Response], dict[str, JSONSchema]]:
+) -> tuple[dict[HttpStatus, OperationResponse], dict[str, JSONSchema]]:
     schemas: dict[str, JSONSchema] = {}
-    responses: dict[str, Response] = {}
+    if response and is_union(response):
+        all_resp: dict[HttpStatus, OperationResponse] = {}
+        all_schema: dict[str, JSONSchema] = {}
+        for resp in get_args(response):
+            oper_resp, schemas = response_schema_to_responses(resp)
+            for key, val in oper_resp.items():
+                if key in all_resp:
+                    oneOf = []
+                    if schema := get_schema(all_resp, key):
+                        if schema is not None:
+                            if "oneOf" in schema:
+                                oneOf = schema["oneOf"]
+                            else:
+                                oneOf = [schema]
+
+                    if (new_schema := get_schema(oper_resp, key)) is not None:
+                        oneOf.append(new_schema)
+                    content = Content.model_validate(
+                        {
+                            "application/json": MediaType.model_validate(
+                                {
+                                    "schema": {
+                                        "oneOf": oneOf,
+                                    }
+                                }
+                            )
+                        }
+                    )
+                    all_resp[key] = OperationResponse(
+                        description=f"{all_resp[key].description}, {val.description}",
+                        content=content,
+                    )
+
+                else:
+                    all_resp[key] = val
+            all_schema.update(schemas)
+        return all_resp, all_schema
+
+    responses: dict[HttpStatus, OperationResponse] = {}
     if response is None:
-        responses["204"] = Response(description="No Content")
+        responses[HttpStatus("204")] = OperationResponse(description="No Content")
     else:
         schema_name = f"{response.__module__}__{response.__qualname__}"
         schema_name = schema_name.replace(".", "_")
-        responses["200"] = Response(
+        responses[HttpStatus("200")] = OperationResponse(
             description=response.__doc__ or response.__name__,
             content=Content.model_validate(
                 {
                     # we should read something for the accepted content type
-                    "application/json": MediaType(
-                        schema={"$ref": f"#/components/schemas/{schema_name}"}
+                    "application/json": MediaType.model_validate(
+                        {"schema": {"$ref": f"#/components/schemas/{schema_name}"}}
                     ),
                 }
             ),
