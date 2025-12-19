@@ -100,6 +100,69 @@ class Dog(Request):
             },
             id="Request with body",
         ),
+        pytest.param(
+            Cat | Dog,
+            [],
+            RequestBody(
+                description="Cat",
+                required=True,
+                content=Content.model_validate(
+                    {
+                        "application/json": MediaType.model_validate(
+                            {
+                                "schema": {
+                                    "oneOf": [
+                                        {"$ref": "#/components/schemas/CatRequestBody"},
+                                        {"$ref": "#/components/schemas/DogRequestBody"},
+                                    ]
+                                }
+                            }
+                        )
+                    }
+                ),
+            ),
+            {
+                "CatRequestBody": {
+                    "properties": {
+                        "meows": {
+                            "title": "Meows",
+                            "type": "integer",
+                        },
+                        "pet_type": {
+                            "const": "cat",
+                            "title": "Pet Type",
+                            "type": "string",
+                        },
+                    },
+                    "required": [
+                        "pet_type",
+                        "meows",
+                    ],
+                    "title": "CatRequestBody",
+                    "type": "object",
+                },
+                "DogRequestBody": {
+                    "properties": {
+                        "barks": {
+                            "title": "Barks",
+                            "type": "number",
+                        },
+                        "pet_type": {
+                            "const": "dog",
+                            "title": "Pet Type",
+                            "type": "string",
+                        },
+                    },
+                    "required": [
+                        "pet_type",
+                        "barks",
+                    ],
+                    "title": "DogRequestBody",
+                    "type": "object",
+                },
+            },
+            id="Request with body",
+        ),
         pytest.param(Request, [], None, {}, id="empty request"),
     ],
 )

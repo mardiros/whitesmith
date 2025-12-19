@@ -1,9 +1,10 @@
 from collections.abc import Sequence
 from pathlib import Path
-from typing import Any
+from typing import Any, get_args
 
 import blacksmith
 from blacksmith.domain.registry import HttpResource, registry
+from blacksmith.shared_utils.introspection import is_union
 from jinja2 import Environment, PackageLoader
 from pydantic import BaseModel, Field, create_model
 from pydantic_core import PydanticUndefined
@@ -82,6 +83,29 @@ class OpenAPIDocument(BaseModel):
 def request_schema_to_parameter(
     request: type[blacksmith.Request],
 ) -> tuple[list[Parameter], RequestBody | None, dict[str, JSONSchema]]:
+    if is_union(request):
+        args_ = get_args(request)
+        allparams = {}
+        allschemas = {}
+        allschemarefs = {"oneOf": []}
+        request_body = RequestBody(
+            description=request.__doc__ or request.__qualname__,
+            required=False,
+            content=Content.model_validate(
+                {
+                    # we should read something for the accepted content type
+                    "application/json": MediaType(schema=allschemarefs),
+                }
+            ),
+        )
+        for args in args_:
+            cparams, creq, cschemas = request_schema_to_parameter(args)
+            # fix the override of schema here
+            allparams.update({p.name: p for p in cparams})
+            allschemas.update(cschemas)
+            allschemarefs["oneOf"].append(creq.content.application_json.schema_)
+        return list(allparams.values()), request_body, allschemas
+
     params: list[Parameter] = []
     json_schemas = request.model_json_schema()
     postbody_required = False
