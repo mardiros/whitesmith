@@ -1,3 +1,6 @@
+## 5.1.2 - Released on 2025-12-22
+* Fix generation of open api for schema using alias. 
+
 ## 5.1.1 - Released on 2025-12-19
 * Fix generate-openapi: use proper swager name for locations.
 * Add support of union type for generate-openapi command.
