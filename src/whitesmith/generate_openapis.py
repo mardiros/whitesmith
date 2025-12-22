@@ -86,6 +86,21 @@ def get_name(typ: type[Any]) -> str:
     return schema_name.replace(".", "_")
 
 
+def build_openapi_schema(
+    schema_name: str,
+    model: type[BaseModel],
+) -> dict[str, JSONSchema]:
+    schemas = {}
+    schema = model.model_json_schema(
+        ref_template=f"#/components/schemas/{schema_name}{{model}}"
+    )
+    defs = schema.pop("$defs", {})
+    schemas[schema_name] = schema
+    for key, val in defs.items():
+        schemas[f"{schema_name}{key}"] = val
+    return schemas
+
+
 def request_schema_to_params(
     request: type[blacksmith.Request],
 ) -> tuple[list[Parameter], RequestBody | None, dict[str, JSONSchema]]:
@@ -154,13 +169,7 @@ def request_schema_to_params(
         schema_name = get_name(request)
         model = create_model(schema_name, **postbody)  # type: ignore
 
-        schema = model.model_json_schema(
-            ref_template=f"#/components/schemas/{schema_name}{{model}}"
-        )
-        defs = schema.pop("$defs", {})
-        schemas[schema_name] = schema
-        for key, val in defs.items():
-            schemas[f"{schema_name}{key}"] = val
+        schemas = build_openapi_schema(schema_name, model)
 
         request_body = RequestBody(
             description=request.__doc__ or request.__qualname__,
@@ -239,7 +248,6 @@ def response_schema_to_responses(
         responses[HttpStatus("204")] = OperationResponse(description="No Content")
     else:
         schema_name = get_name(response)
-        schema_name = schema_name.replace(".", "_")
         responses[HttpStatus("200")] = OperationResponse(
             description=response.__doc__ or response.__name__,
             content=Content.model_validate(
@@ -251,13 +259,8 @@ def response_schema_to_responses(
                 }
             ),
         )
-        schema = response.model_json_schema(
-            ref_template=f"#/components/schemas/{schema_name}{{model}}"
-        )
-        defs = schema.pop("$defs", {})
-        schemas[schema_name] = schema
-        for key, val in defs.items():
-            schemas[f"{schema_name}{key}"] = val
+
+        schemas = build_openapi_schema(schema_name, response)
 
     return responses, schemas
 
