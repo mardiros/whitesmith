@@ -13,9 +13,10 @@
       font-family: sans-serif;
     }
 
+
     #menu {
       width: 240px;
-      background: #1e1e1e;
+      background: rgb(38, 50, 56);
       color: white;
       padding: 10px;
     }
@@ -25,15 +26,19 @@
       width: 100%;
       margin-bottom: 8px;
       padding: 8px;
-      background: #2e2e2e;
+      background: rgb(17, 23, 26);
       border: none;
+      border-left: 0.5em solid transparent;
       color: white;
       text-align: left;
       cursor: pointer;
     }
+    #menu button.selected {
+      border-left-color: rgb(47, 129, 50);
+    }
 
     #menu button:hover {
-      background: #444;
+      background: rgb(47, 129, 50, .4);
     }
 
     #content {
@@ -55,6 +60,8 @@
     const content = document.getElementById("content")
     const buttons = document.querySelectorAll("#menu button")
 
+    let oldButton = null;
+
     function loadService(name, pushState = true) {
       const btn = document.getElementById(name)
       if (!btn) {
@@ -64,6 +71,11 @@
 
       const spec = btn.dataset.spec
       content.innerHTML = ""
+      btn.classList.add("selected")
+      if (oldButton) {
+        oldButton.classList.remove("selected")
+      }
+      oldButton = btn;
 
       Redoc.init(spec, {}, content)
 
