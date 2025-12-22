@@ -82,8 +82,23 @@ class OpenAPIDocument(BaseModel):
 
 
 def get_name(typ: type[Any]) -> str:
-    schema_name = f"{typ.__module__}__{typ.__qualname__}"
-    return schema_name.replace(".", "_")
+    schema_name = f"{typ.__module__}.{typ.__qualname__}"
+    return schema_name
+
+
+def build_openapi_schema(
+    schema_name: str,
+    model: type[BaseModel],
+) -> dict[str, JSONSchema]:
+    schemas = {}
+    schema = model.model_json_schema(
+        ref_template=f"#/components/schemas/{schema_name}{{model}}"
+    )
+    defs = schema.pop("$defs", {})
+    schemas[schema_name] = schema
+    for key, val in defs.items():
+        schemas[f"{schema_name}{key}"] = val
+    return schemas
 
 
 def request_schema_to_params(
@@ -117,12 +132,14 @@ def request_schema_to_params(
                         allschemarefs["oneOf"].append(media.schema_)
         return list(allparams.values()), union_request_body, allschemas
 
+    schemas = {}
     params: list[Parameter] = []
-    json_schemas = request.model_json_schema()
+    request_schema = request.model_json_schema()
     postbody_required = False
     postbody: dict[str, Any] = {}
+
     for name, field in request.model_fields.items():
-        location = json_schemas["properties"][field.alias or name].pop("location")
+        location = request_schema["properties"][field.alias or name].pop("location")
         match location:
             case "query" | "header" | "path":
                 param = Parameter.model_validate(
@@ -130,7 +147,7 @@ def request_schema_to_params(
                         "name": field.alias or name,
                         "in": location,
                         "required": field.is_required(),
-                        "schema": json_schemas["properties"][field.alias or name],
+                        "schema": request_schema["properties"][field.alias or name],
                     }
                 )
                 params.append(param)
@@ -146,12 +163,14 @@ def request_schema_to_params(
             case _:
                 # what to do with attachement
                 pass
-    schemas = {}
+
     request_body: RequestBody | None = None
     if postbody:
         schema_name = get_name(request)
         model = create_model(schema_name, **postbody)  # type: ignore
-        schemas[schema_name] = model.model_json_schema()
+
+        schemas = build_openapi_schema(schema_name, model)
+
         request_body = RequestBody(
             description=request.__doc__ or request.__qualname__,
             required=postbody_required,
@@ -229,7 +248,6 @@ def response_schema_to_responses(
         responses[HttpStatus("204")] = OperationResponse(description="No Content")
     else:
         schema_name = get_name(response)
-        schema_name = schema_name.replace(".", "_")
         responses[HttpStatus("200")] = OperationResponse(
             description=response.__doc__ or response.__name__,
             content=Content.model_validate(
@@ -241,7 +259,8 @@ def response_schema_to_responses(
                 }
             ),
         )
-        schemas[schema_name] = response.model_json_schema()
+
+        schemas = build_openapi_schema(schema_name, response)
 
     return responses, schemas
 

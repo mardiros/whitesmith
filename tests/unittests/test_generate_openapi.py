@@ -87,7 +87,7 @@ class Dog(Response):
                             {
                                 "schema": {
                                     "$ref": "#/components/schemas/"
-                                    "tests_unittests_test_generate_openapi__CreateCat"
+                                    "tests.unittests.test_generate_openapi.CreateCat"
                                 }
                             }
                         )
@@ -95,7 +95,7 @@ class Dog(Response):
                 ),
             ),
             {
-                "tests_unittests_test_generate_openapi__CreateCat": {
+                "tests.unittests.test_generate_openapi.CreateCat": {
                     "properties": {
                         "meows": {
                             "title": "Meows",
@@ -111,7 +111,7 @@ class Dog(Response):
                         "pet_type",
                         "meows",
                     ],
-                    "title": "tests_unittests_test_generate_openapi__CreateCat",
+                    "title": "tests.unittests.test_generate_openapi.CreateCat",
                     "type": "object",
                 }
             },
@@ -131,12 +131,12 @@ class Dog(Response):
                                     "oneOf": [
                                         {
                                             "$ref": "#/components/schemas/"
-                                            "tests_unittests_test_generate_openapi__"
+                                            "tests.unittests.test_generate_openapi."
                                             "CreateCat"
                                         },
                                         {
                                             "$ref": "#/components/schemas/"
-                                            "tests_unittests_test_generate_openapi__"
+                                            "tests.unittests.test_generate_openapi."
                                             "CreateDog"
                                         },
                                     ]
@@ -147,7 +147,7 @@ class Dog(Response):
                 ),
             ),
             {
-                "tests_unittests_test_generate_openapi__CreateCat": {
+                "tests.unittests.test_generate_openapi.CreateCat": {
                     "properties": {
                         "meows": {
                             "title": "Meows",
@@ -163,10 +163,10 @@ class Dog(Response):
                         "pet_type",
                         "meows",
                     ],
-                    "title": "tests_unittests_test_generate_openapi__CreateCat",
+                    "title": "tests.unittests.test_generate_openapi.CreateCat",
                     "type": "object",
                 },
-                "tests_unittests_test_generate_openapi__CreateDog": {
+                "tests.unittests.test_generate_openapi.CreateDog": {
                     "properties": {
                         "barks": {
                             "title": "Barks",
@@ -182,7 +182,7 @@ class Dog(Response):
                         "pet_type",
                         "barks",
                     ],
-                    "title": "tests_unittests_test_generate_openapi__CreateDog",
+                    "title": "tests.unittests.test_generate_openapi.CreateDog",
                     "type": "object",
                 },
             },
@@ -218,7 +218,7 @@ def test_request_schema_to_params(
                                 {
                                     "schema": {
                                         "$ref": "#/components/schemas/"
-                                        "tests_unittests_test_generate_openapi__Cat"
+                                        "tests.unittests.test_generate_openapi.Cat"
                                     }
                                 }
                             )
@@ -227,7 +227,7 @@ def test_request_schema_to_params(
                 )
             },
             {
-                "tests_unittests_test_generate_openapi__Cat": {
+                "tests.unittests.test_generate_openapi.Cat": {
                     "properties": {
                         "meows": {
                             "title": "Meows",
@@ -262,13 +262,13 @@ def test_request_schema_to_params(
                                         "oneOf": [
                                             {
                                                 "$ref": "#/components/schemas/"
-                                                "tests_unittests_test_generate_openapi"
-                                                "__Cat"
+                                                "tests.unittests.test_generate_openapi"
+                                                ".Cat"
                                             },
                                             {
                                                 "$ref": "#/components/schemas/"
-                                                "tests_unittests_test_generate_openapi"
-                                                "__Dog"
+                                                "tests.unittests.test_generate_openapi"
+                                                ".Dog"
                                             },
                                         ]
                                     }
@@ -279,7 +279,7 @@ def test_request_schema_to_params(
                 )
             },
             {
-                "tests_unittests_test_generate_openapi__Cat": {
+                "tests.unittests.test_generate_openapi.Cat": {
                     "properties": {
                         "meows": {
                             "title": "Meows",
@@ -298,7 +298,7 @@ def test_request_schema_to_params(
                     "title": "Cat",
                     "type": "object",
                 },
-                "tests_unittests_test_generate_openapi__Dog": {
+                "tests.unittests.test_generate_openapi.Dog": {
                     "properties": {
                         "barks": {
                             "title": "Barks",
