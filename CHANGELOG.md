@@ -1,3 +1,7 @@
+## 5.1.3 - Released on 2025-12-22
+* Fix generation of open api that use $defs.
+* Improve menu to display the current service displayed tab.
+
 ## 5.1.2 - Released on 2025-12-22
 * Fix generation of open api for schema using alias. 
 
