@@ -82,8 +82,8 @@ class OpenAPIDocument(BaseModel):
 
 
 def get_name(typ: type[Any]) -> str:
-    schema_name = f"{typ.__module__}__{typ.__qualname__}"
-    return schema_name.replace(".", "_")
+    schema_name = f"{typ.__module__}.{typ.__qualname__}"
+    return schema_name
 
 
 def build_openapi_schema(
