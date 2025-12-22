@@ -122,7 +122,7 @@ def request_schema_to_params(
     postbody_required = False
     postbody: dict[str, Any] = {}
     for name, field in request.model_fields.items():
-        location = json_schemas["properties"][name].pop("location")
+        location = json_schemas["properties"][field.alias or name].pop("location")
         match location:
             case "query" | "header" | "path":
                 param = Parameter.model_validate(
@@ -130,7 +130,7 @@ def request_schema_to_params(
                         "name": field.alias or name,
                         "in": location,
                         "required": field.is_required(),
-                        "schema": json_schemas["properties"][name],
+                        "schema": json_schemas["properties"][field.alias or name],
                     }
                 )
                 params.append(param)
