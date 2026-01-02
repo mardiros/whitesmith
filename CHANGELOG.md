@@ -1,3 +1,6 @@
+## 5.2.0 - Released on 2026-01-02
+* Change the scope to module for all pytest fixtures. 
+
 ## 5.1.3 - Released on 2025-12-22
 * Fix generation of open api that use $defs.
 * Improve menu to display the current service displayed tab.
