@@ -1,3 +1,7 @@
+## 5.2.1 - Released on 2026-01-02
+* Fix crash on router when the test module is generated,
+  and does not set a __package__ such as old Tursu release.
+
 ## 5.2.0 - Released on 2026-01-02
 * Change the scope to module for all pytest fixtures. 
 
