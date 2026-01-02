@@ -13,7 +13,7 @@ from whitesmith.transport import AsyncFakeTransport, SyncFakeTransport
 HANDLERS: dict[str, Router] = {}
 
 
-@pytest.fixture()
+@pytest.fixture(scope="module")
 def whitesmith_router(request: pytest.FixtureRequest) -> Router:
     mods: list[str] = request.module.__package__.split(".")
     full_modname = ""
@@ -39,7 +39,7 @@ def whitesmith_router(request: pytest.FixtureRequest) -> Router:
     return handler
 
 
-@pytest.fixture()
+@pytest.fixture(scope="module")
 def sync_blacksmith_client(
     whitesmith_router: Router,
 ) -> blacksmith.SyncClientFactory[Any]:
@@ -52,7 +52,7 @@ def sync_blacksmith_client(
     )
 
 
-@pytest.fixture()
+@pytest.fixture(scope="module")
 def async_blacksmith_client(
     whitesmith_router: Router,
 ) -> blacksmith.AsyncClientFactory[Any]:
