@@ -15,6 +15,11 @@ HANDLERS: dict[str, Router] = {}
 
 @pytest.fixture(scope="module")
 def whitesmith_router(request: pytest.FixtureRequest) -> Router:
+    pkg = request.module.__package__
+    if pkg is None:
+        # pkg can be None in case of ast generated code, such as old
+        # version of Tursu tests suite.
+        return Router()
     mods: list[str] = request.module.__package__.split(".")
     full_modname = ""
     full_modname_handlers: list[str] = []
