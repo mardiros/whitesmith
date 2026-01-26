@@ -1,8 +1,9 @@
 from collections.abc import Callable, MutableMapping
+from dataclasses import dataclass
 from types import ModuleType
 from typing import Any
 
-import venusian
+import tamahagane as th
 from blacksmith import HTTPRequest
 from blacksmith import HTTPResponse as BMResponse
 from blacksmith.typing import HTTPMethod
@@ -12,7 +13,12 @@ from whitesmith import HTTPCollectionResponse, HTTPResponse
 Handler = Callable[[HTTPRequest], HTTPResponse[Any] | HTTPCollectionResponse[Any]]
 
 
-VENUSIAN_CATEGORY = "whitesmith"
+TH_CATEGORY = "whitesmith"
+
+
+@dataclass
+class Registry:
+    whitesmith: "Router"
 
 
 class Router:
@@ -42,84 +48,70 @@ class RouterBuilder:
 
     def get(self, url: str) -> Callable[[Handler], Handler]:
         def configure(wrapped: Handler) -> Handler:
-            def callback(scanner: venusian.Scanner, name: str, ob: Handler) -> None:
-                if not hasattr(scanner, "router"):
-                    return  # coverage: ignore
-                scanner.router.register("GET", url, wrapped)  # type: ignore
+            def callback(registry: Registry) -> None:
+                registry.whitesmith.register("GET", url, wrapped)
 
-            venusian.attach(wrapped, callback, category=VENUSIAN_CATEGORY)  # type: ignore
+            th.attach(wrapped, callback, category=TH_CATEGORY)
             return wrapped
 
         return configure
 
     def post(self, url: str) -> Callable[[Handler], Handler]:
         def configure(wrapped: Handler) -> Handler:
-            def callback(scanner: venusian.Scanner, name: str, ob: Handler) -> None:
-                if not hasattr(scanner, "router"):
-                    return  # coverage: ignore
-                scanner.router.register("POST", url, wrapped)  # type: ignore
+            def callback(registry: Registry) -> None:
+                registry.whitesmith.register("POST", url, wrapped)
 
-            venusian.attach(wrapped, callback, category=VENUSIAN_CATEGORY)  # type: ignore
+            th.attach(wrapped, callback, category=TH_CATEGORY)
             return wrapped
 
         return configure
 
     def put(self, url: str) -> Callable[[Handler], Handler]:
         def configure(wrapped: Handler) -> Handler:
-            def callback(scanner: venusian.Scanner, name: str, ob: Handler) -> None:
-                if not hasattr(scanner, "router"):
-                    return  # coverage: ignore
-                scanner.router.register("PUT", url, wrapped)  # type: ignore
+            def callback(registry: Registry) -> None:
+                registry.whitesmith.register("PUT", url, wrapped)
 
-            venusian.attach(wrapped, callback, category=VENUSIAN_CATEGORY)  # type: ignore
+            th.attach(wrapped, callback, category=TH_CATEGORY)
             return wrapped
 
         return configure
 
     def patch(self, url: str) -> Callable[[Handler], Handler]:
         def configure(wrapped: Handler) -> Handler:
-            def callback(scanner: venusian.Scanner, name: str, ob: Handler) -> None:
-                if not hasattr(scanner, "router"):
-                    return  # coverage: ignore
-                scanner.router.register("PATCH", url, wrapped)  # type: ignore
+            def callback(registry: Registry) -> None:
+                registry.whitesmith.register("PATCH", url, wrapped)
 
-            venusian.attach(wrapped, callback, category=VENUSIAN_CATEGORY)  # type: ignore
+            th.attach(wrapped, callback, category=TH_CATEGORY)
             return wrapped
 
         return configure
 
     def delete(self, url: str) -> Callable[[Handler], Handler]:
         def configure(wrapped: Handler) -> Handler:
-            def callback(scanner: venusian.Scanner, name: str, ob: Handler) -> None:
-                if not hasattr(scanner, "router"):
-                    return  # coverage: ignore
-                scanner.router.register("DELETE", url, wrapped)  # type: ignore
+            def callback(registry: Registry) -> None:
+                registry.whitesmith.register("DELETE", url, wrapped)
 
-            venusian.attach(wrapped, callback, category=VENUSIAN_CATEGORY)  # type: ignore
+            th.attach(wrapped, callback, category=TH_CATEGORY)
             return wrapped
 
         return configure
 
     def options(self, url: str) -> Callable[[Handler], Handler]:
         def configure(wrapped: Handler) -> Handler:
-            def callback(scanner: venusian.Scanner, name: str, ob: Handler) -> None:
-                if not hasattr(scanner, "router"):
-                    return  # coverage: ignore
-                scanner.router.register("OPTIONS", url, wrapped)  # type: ignore
+            def callback(registry: Registry) -> None:
+                registry.whitesmith.register("OPTIONS", url, wrapped)
 
-            venusian.attach(wrapped, callback, category=VENUSIAN_CATEGORY)  # type: ignore
+            th.attach(wrapped, callback, category=TH_CATEGORY)
             return wrapped
 
         return configure
 
     def head(self, url: str) -> Callable[[Handler], Handler]:
         def configure(wrapped: Handler) -> Handler:
-            def callback(scanner: venusian.Scanner, name: str, ob: Handler) -> None:
-                if not hasattr(scanner, "router"):
-                    return  # coverage: ignore
-                scanner.router.register("HEAD", url, wrapped)  # type: ignore
+            def callback(registry: Registry) -> None:
+                registry.whitesmith.register("HEAD", url, wrapped)
 
-            venusian.attach(wrapped, callback, category=VENUSIAN_CATEGORY)  # type: ignore
+            th.attach(wrapped, callback, category=TH_CATEGORY)
             return wrapped
 
         return configure
@@ -127,8 +119,8 @@ class RouterBuilder:
     def build_router(self, mod: ModuleType) -> Router:
         assert mod
         router = Router()
-        scanner = venusian.Scanner(router=router)
-        scanner.scan(mod, categories=[VENUSIAN_CATEGORY])
+        scanner = th.Scanner(Registry(whitesmith=router))
+        scanner.scan(mod)
         return router
 
 

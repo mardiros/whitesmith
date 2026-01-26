@@ -19,7 +19,7 @@ dependencies = [
     "blacksmith >=5.0.1,<6",
     "polyfactory >=2.14.0,<3",
     "pydantic >=2.6.0,<3",
-    "venusian >=3.1.1,<4",
+    "tamahagane>=0.4.1,<1",
 ]
 
 [project.urls]
@@ -76,10 +76,6 @@ select = [
     "RUF", # the ruff developper's own rules
 ]
 ignore = ["RUF022"]
-
-[[tool.mypy.overrides]]
-module = ["venusian"]
-ignore_missing_imports = true
 
 [tool.coverage.report]
 exclude_lines = [
