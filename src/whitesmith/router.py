@@ -116,7 +116,7 @@ class RouterBuilder:
 
         return configure
 
-    def build_router(self, mod: ModuleType) -> Router:
+    def build_router(self, mod: str) -> Router:
         assert mod
         router = Router()
         scanner = th.Scanner(Registry(whitesmith=router))
