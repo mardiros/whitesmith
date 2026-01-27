@@ -722,6 +722,15 @@ wheels = [
 ]
 
 [[package]]
+name = "tamahagane"
+version = "0.4.1"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/b1/88/d5741a6c726b67c0e90c022c9ae585e7e044f61c59b5a75e7bdbf1a4fe50/tamahagane-0.4.1.tar.gz", hash = "sha256:4b11e234656f99468a1998e39a910207df59da2e7f1fa26dac3cc08f55d0c5c2", size = 5761, upload-time = "2026-01-26T22:22:33.716Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/29/e4/2dfba2428a1f8add1edc60acd9b37eb0ea540f7266a33ab12fe2f4ed25c7/tamahagane-0.4.1-py3-none-any.whl", hash = "sha256:6263f8715d30c988971e6bda60ecd90838aab7bb61e56c213cf00b1fe5b3c9b8", size = 6714, upload-time = "2026-01-26T22:22:32.965Z" },
+]
+
+[[package]]
 name = "tomli"
 version = "2.3.0"
 source = { registry = "https://pypi.org/simple" }
@@ -801,15 +810,6 @@ wheels = [
 ]
 
 [[package]]
-name = "venusian"
-version = "3.1.1"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/70/4c/eefa68085c555dc11e6744b9c6fbe5966b1c9378c47267776a448923e9a5/venusian-3.1.1.tar.gz", hash = "sha256:534fb3b355669283eb3954581931e5d1d071fce61d029d58f3219a5e3a6f0c41", size = 39269, upload-time = "2024-12-02T02:35:04.033Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/5a/4b/34d926eba40db81b204066a60b4efdc5d8867a8efcbfe44d69b634b1c907/venusian-3.1.1-py3-none-any.whl", hash = "sha256:0845808a985976acbceaa1fbb871c7fac4fb28ae75453232970e9c2c2866dbf4", size = 14026, upload-time = "2024-12-02T02:35:03.056Z" },
-]
-
-[[package]]
 name = "whitesmith"
 version = "5.2.1"
 source = { editable = "." }
@@ -818,7 +818,7 @@ dependencies = [
     { name = "jinja2" },
     { name = "polyfactory" },
     { name = "pydantic" },
-    { name = "venusian" },
+    { name = "tamahagane" },
 ]
 
 [package.dev-dependencies]
@@ -835,7 +835,7 @@ requires-dist = [
     { name = "jinja2", specifier = ">=3.1.2,<4" },
     { name = "polyfactory", specifier = ">=2.14.0,<3" },
     { name = "pydantic", specifier = ">=2.6.0,<3" },
-    { name = "venusian", specifier = ">=3.1.1,<4" },
+    { name = "tamahagane", specifier = ">=0.4.1,<1" },
 ]
 
 [package.metadata.requires-dev]

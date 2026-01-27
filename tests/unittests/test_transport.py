@@ -12,10 +12,8 @@ from whitesmith.transport import AsyncFakeTransport, SyncFakeTransport
 
 @pytest.fixture
 def router() -> Router:
-    from tests import whitesmith_handlers
-
     builder = RouterBuilder()
-    return builder.build_router(whitesmith_handlers)
+    return builder.build_router("tests.whitesmith_handlers")
 
 
 def test_sync_transport_call(router: Router):

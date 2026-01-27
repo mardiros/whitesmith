@@ -1,6 +1,5 @@
 """Pytest plugin"""
 
-import importlib
 from typing import Any
 
 import blacksmith
@@ -30,8 +29,7 @@ def whitesmith_router(request: pytest.FixtureRequest) -> Router:
             return HANDLERS[full_modname]
 
         try:
-            mod = importlib.import_module(full_modname)
-            router = RouterBuilder().build_router(mod)
+            router = RouterBuilder().build_router(full_modname)
         except ImportError:
             mods.pop()
         else:
