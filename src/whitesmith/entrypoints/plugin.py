@@ -30,7 +30,9 @@ def whitesmith_router(request: pytest.FixtureRequest) -> Router:
 
         try:
             router = RouterBuilder().build_router(full_modname)
-        except ImportError:
+        except ImportError as exc:
+            if "whitesmith_handlers" not in str(exc):
+                raise
             mods.pop()
         else:
             for handlers in full_modname_handlers:
