@@ -1,3 +1,8 @@
+## 5.2.3 - Released on 2026-03-25
+* Reraise ImportError that not comes from whitesmith_handlers
+  during fixtures scan.
+* Fix typo.
+
 ## 5.2.2 - Released on 2026-01-27
 * Replace venusian by tamahagane. 
 
