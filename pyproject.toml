@@ -1,7 +1,7 @@
 [project]
 name = "whitesmith"
 version = "5.2.3"
-description = "Testing toolbox for blacksmith"
+description = "Dev toolbox for blacksmith"
 authors = [{ name = "Guillaume Gauvrit", email = "guillaume@gauvr.it" }]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
@@ -66,7 +66,6 @@ reportPrivateUsage = false
 reportUnknownMemberType = false
 reportUnknownParameterType = false
 reportUnknownVariableType = false
-reportShadowedImports = false
 typeCheckingMode = "strict"
 venvPath = ".venv"
 
