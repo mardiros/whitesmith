@@ -9,6 +9,8 @@ from jinja2 import Environment, PackageLoader
 from pydantic import BaseModel, Field, create_model
 from pydantic_core import PydanticUndefined
 
+from whitesmith.entrypoints.cli import SubParser, cli_command
+
 env = Environment(loader=PackageLoader("whitesmith"), autoescape=False)
 redoc_template = env.get_template("redoc.jinja2")
 
@@ -356,3 +358,30 @@ def generate_openapis(
             services=services,
         )
         file_.write_text(redoc)
+
+
+@cli_command
+def main(subparsers: SubParser) -> None:
+    sp_action = subparsers.add_parser(
+        "generate-openapi", help="Generate openapi doc for client side calls."
+    )
+    sp_action.add_argument(
+        "-o",
+        "--out-dir",
+        dest="outdir",
+        default="tests",
+        help="Directory where the schemas will be generated",
+    )
+    sp_action.add_argument(
+        "--overwrite", action="store_true", dest="overwrite", default=False
+    )
+
+    sp_action.add_argument(
+        "-m",
+        "--resource-module",
+        dest="resources_mod",
+        required=True,
+        nargs="+",
+        help="Blacksmith resource module to scan",
+    )
+    sp_action.set_defaults(handler=generate_openapis)

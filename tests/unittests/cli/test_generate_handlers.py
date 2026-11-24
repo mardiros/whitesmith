@@ -3,7 +3,7 @@ from pathlib import Path
 from blacksmith import PathInfoField, QueryStringField, Request, Response
 from blacksmith.domain.registry import HttpResource
 
-from whitesmith.generate_handlers import (
+from whitesmith.bin.generate_handlers import (
     HandlerTemplateContext,
     ResponseModel,
     Route,
@@ -47,7 +47,7 @@ def test_generate_handlers_context():
     }
     assert context.has_missing_schema is False
     assert context.response_models == {
-        ResponseModel(mod="tests.unittests.test_generate_handlers", name="Phone"),
+        ResponseModel(mod="tests.unittests.cli.test_generate_handlers", name="Phone"),
     }
     assert context.routes == [
         Route(
@@ -78,7 +78,7 @@ def test_generate_collection_handlers():
     }
     assert context.has_missing_schema is False
     assert context.response_models == {
-        ResponseModel(mod="tests.unittests.test_generate_handlers", name="Phone"),
+        ResponseModel(mod="tests.unittests.cli.test_generate_handlers", name="Phone"),
     }
     assert context.routes == [
         Route(
@@ -118,6 +118,11 @@ def test_generate_handlers_missing_return_schema():
 
 
 def test_generate_handlers(tmp_path: Path):
-    generate_handlers(tmp_path, ["tests.whitesmith_handlers"], overwrite=True)
+    generate_handlers(tmp_path, ["tests.resources"], overwrite=True)
     files = {f.name: f.read_text() for f in tmp_path.glob("whitesmith_handlers/*.py")}
-    assert files.keys() == {"__init__.py", "address.py", "notif.py", "organization.py"}
+    assert files.keys() == {
+        "__init__.py",
+        "address.py",
+        "notif.py",
+        "organization.py",
+    }

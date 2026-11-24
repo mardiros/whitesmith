@@ -4,7 +4,7 @@ from blacksmith import AsyncClientFactory
 from blacksmith.service._sync.client import SyncClientFactory
 
 from tests.resources.address.phonenumbers import GetPhone, Phone
-from tests.resources.organization.user import CollectionGetUser
+from tests.resources.organization.users import CollectionGetUser
 
 
 def test_sync_blacksmith_client(sync_blacksmith_client: SyncClientFactory[Phone]):
