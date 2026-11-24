@@ -6,6 +6,8 @@ from blacksmith.domain.registry import HttpResource, registry
 from jinja2 import Environment, PackageLoader
 from pydantic import BaseModel, Field
 
+from whitesmith.entrypoints.cli import SubParser, cli_command
+
 env = Environment(loader=PackageLoader("whitesmith"), autoescape=False)
 handlers_template = env.get_template("handlers.jinja2")
 
@@ -119,3 +121,30 @@ def generate_handlers(
             print(f"Writing {file_}")
             handler = handlers_template.render(context=context)
             file_.write_text(handler)
+
+
+@cli_command
+def main(subparsers: SubParser) -> None:
+    sp_action = subparsers.add_parser(
+        "generate", help="Generate handlers that implement fake routes."
+    )
+    sp_action.add_argument(
+        "-o",
+        "--out-dir",
+        dest="outdir",
+        default="tests",
+        help="Directory where the handlers will be generated.",
+    )
+    sp_action.add_argument(
+        "--overwrite", action="store_true", dest="overwrite", default=False
+    )
+
+    sp_action.add_argument(
+        "-m",
+        "--resource-module",
+        dest="resources_mod",
+        required=True,
+        nargs="+",
+        help="Blacksmith resource module to scan.",
+    )
+    sp_action.set_defaults(handler=generate_handlers)

@@ -1,61 +1,49 @@
 import argparse
 import sys
-from collections.abc import Sequence
+from collections.abc import Callable, Sequence
+from dataclasses import dataclass
+from typing import Protocol
 
-from whitesmith.generate_handlers import generate_handlers
-from whitesmith.generate_openapis import generate_openapis
+import tamahagane as th
+
+
+class SubParser(Protocol):
+    def add_parser(self, name: str, *, help: str) -> argparse.ArgumentParser: ...
+
+
+CommandHandler = Callable[[SubParser], None]
+
+
+@dataclass
+class Registries:
+    subparsers: SubParser
+
+
+def cli_command(wrapped: CommandHandler) -> CommandHandler:
+
+    def callback(registries: Registries) -> None:
+        wrapped(registries.subparsers)
+
+    th.attach(wrapped, callback, category="subparsers")
+    return wrapped
 
 
 def main(args: Sequence[str] = sys.argv) -> None:
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(description="CLI Tool")
+    subparsers = parser.add_subparsers(dest="command", help="Available commands")
 
-    subparsers = parser.add_subparsers(title="action", required=True)
+    registry = Registries(subparsers=subparsers)
+    scanner = th.Scanner[Registries](registry)
+    scanner.scan("whitesmith.bin")
 
-    sp_action = subparsers.add_parser("generate")
-    sp_action.add_argument(
-        "-o",
-        "--out-dir",
-        dest="outdir",
-        default="tests",
-        help="Directory where the handlers will be generated",
-    )
-    sp_action.add_argument(
-        "--overwrite", action="store_true", dest="overwrite", default=False
-    )
+    kwargs = vars(parser.parse_args(args[1:]))
+    handler = kwargs.pop("handler", None)
+    if handler:
+        kwargs.pop("command", None)
+        handler(**kwargs)
+    else:
+        parser.print_help()
 
-    sp_action.add_argument(
-        "-m",
-        "--resource-module",
-        dest="resources_mod",
-        required=True,
-        nargs="+",
-        help="blacksmith resource module to scan",
-    )
-    sp_action.set_defaults(handler=generate_handlers)
 
-    sp_action = subparsers.add_parser("generate-openapi")
-    sp_action.add_argument(
-        "-o",
-        "--out-dir",
-        dest="outdir",
-        default="tests",
-        help="Directory where the schemas will be generated",
-    )
-    sp_action.add_argument(
-        "--overwrite", action="store_true", dest="overwrite", default=False
-    )
-
-    sp_action.add_argument(
-        "-m",
-        "--resource-module",
-        dest="resources_mod",
-        required=True,
-        nargs="+",
-        help="blacksmith resource module to scan",
-    )
-    sp_action.set_defaults(handler=generate_openapis)
-
-    kwargs = parser.parse_args(args[1:])
-    kwargs_dict = vars(kwargs)
-    handler = kwargs_dict.pop("handler")
-    handler(**kwargs_dict)
+if __name__ == "__main__":
+    main()

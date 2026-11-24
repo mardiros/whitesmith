@@ -3,7 +3,7 @@ from typing import Any
 from blacksmith import HTTPRequest
 from polyfactory.factories.pydantic_factory import ModelFactory
 
-from tests.resources.organization.user import PartialUser, User, UserCreated
+from tests.resources.organization.users import PartialUser, User, UserCreated
 from whitesmith import HTTPCollectionResponse, HTTPResponse, router
 
 
