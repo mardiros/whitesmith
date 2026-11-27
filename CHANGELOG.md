@@ -1,3 +1,6 @@
+## 6.0.1 - Released on 2026-11-27
+* Upgrade internal deps tamahagane for package compatibility.
+
 ## 6.0.0 - Released on 2026-11-27
 * Create new version for blacksmith 6.
 * New sub command `generate-types` added to create a fully typed client for blacksmith 6.
