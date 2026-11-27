@@ -23,7 +23,7 @@ readme = "README.md"
 
 dependencies = [
     "Jinja2 >=3.1.2,<4",
-    "blacksmith >=5.0.1,<6",
+    "blacksmith >=6,<7",
     "polyfactory >=2.14.0,<3",
     "pydantic >=2.6.0,<3",
     "tamahagane>=0.4.1,<1",
@@ -44,11 +44,12 @@ includes = ["src", "CHANGELOG.md"]
 excludes = ["tests"]
 
 [dependency-groups]
+
 dev = [
     "pytest >=8.3.3,<9",
     "pytest-cov >=6.0.0,<7",
     "pytest-asyncio >=0.24.0",
-    "mypy >=1.4.1,<2",
+    "mypy >=2,<3",
 ]
 
 [project.entry-points.pytest11]

@@ -1,7 +1,7 @@
-from typing import Any
-
-from blacksmith import AsyncClientFactory, SyncClientFactory
-
+from tests.resources.blacksmith_client import (
+    AsyncAppClientFactory,
+    SyncAppClientFactory,
+)
 from whitesmith import Router
 
 
@@ -34,11 +34,11 @@ async def test_router(whitesmith_router: Router):
     ]
 
 
-async def test_async(async_blacksmith_client: AsyncClientFactory[Any]):
+async def test_async(async_blacksmith_client: AsyncAppClientFactory):
     cli = await async_blacksmith_client("organization")
     assert cli.endpoint == "http://organization.v5"
 
 
-def test_sync(sync_blacksmith_client: SyncClientFactory[Any]):
+def test_sync(sync_blacksmith_client: SyncAppClientFactory):
     cli = sync_blacksmith_client("organization")
     assert cli.endpoint == "http://organization.v5"

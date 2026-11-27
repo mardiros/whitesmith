@@ -47,7 +47,7 @@ def whitesmith_router(request: pytest.FixtureRequest) -> Router:
 @pytest.fixture(scope="module")
 def sync_blacksmith_client(
     whitesmith_router: Router,
-) -> blacksmith.SyncClientFactory[Any]:
+) -> blacksmith.SyncClientFactory[Any, Any]:
     sd = blacksmith.SyncRouterDiscovery(
         service_url_fmt="http://{service}.{version}",
         unversioned_service_url_fmt="http://{service}.NaN",
@@ -60,7 +60,7 @@ def sync_blacksmith_client(
 @pytest.fixture(scope="module")
 def async_blacksmith_client(
     whitesmith_router: Router,
-) -> blacksmith.AsyncClientFactory[Any]:
+) -> blacksmith.AsyncClientFactory[Any, Any]:
     sd = blacksmith.AsyncRouterDiscovery(
         service_url_fmt="http://{service}.{version}",
         unversioned_service_url_fmt="http://{service}.NaN",

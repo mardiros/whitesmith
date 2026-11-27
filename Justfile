@@ -33,6 +33,10 @@ genopenapi:
     PYTHONPATH=. uv run whitesmith generate-openapi -m tests.resources -o tests/openapis --overwrite
     cd tests/openapis/ && python -m http.server 8000
 
+gentypes: && fmt
+    PYTHONPATH=. uv run whitesmith generate-types \
+        -m tests.resources -o tests/resources/blacksmith_client.py --overwrite
+
 lf:
     uv run pytest -sxvvv --lf
 

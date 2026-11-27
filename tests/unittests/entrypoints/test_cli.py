@@ -25,3 +25,20 @@ def test_generate_openapi(tmp_path: Path):
         "notif.json",
         "organization.json",
     }
+
+
+def test_generate_types(tmp_path: Path):
+    main(
+        [
+            "whitesmith",
+            "generate-types",
+            "-o",
+            str(tmp_path / "blacksmith_client.py"),
+            "-m",
+            "tests.resources",
+        ]
+    )
+    files = {f.name: f.read_text() for f in tmp_path.glob("*")}
+    assert files.keys() == {
+        "blacksmith_client.py",
+    }
