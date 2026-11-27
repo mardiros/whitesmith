@@ -1,3 +1,8 @@
+## 6.0.0 - Released on 2026-11-27
+* Create new version for blacksmith 6.
+* New sub command `generate-types` added to create a fully typed client for blacksmith 6.
+* Breaking changes: `generate` sub command has been renamed `generate-handlers`.
+
 ## 5.2.3 - Released on 2026-03-25
 * Reraise ImportError that not comes from whitesmith_handlers
   during fixtures scan.

@@ -870,7 +870,7 @@ wheels = [
 
 [[package]]
 name = "whitesmith"
-version = "5.2.3"
+version = "6.0.0"
 source = { editable = "." }
 dependencies = [
     { name = "blacksmith" },
