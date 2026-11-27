@@ -87,7 +87,8 @@ def handler(
         )
         print(types, file=stream)
     finally:
-        stream.close()
+        if output:
+            stream.close()
 
 
 @cli_command

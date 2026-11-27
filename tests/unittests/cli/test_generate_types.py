@@ -71,6 +71,13 @@ def test_handler(tmp_path: Path):
     assert "class SyncAppClientFactory" in content
 
 
+def test_handler_stdout(capsys: pytest.CaptureFixture[str]):
+    handler(["tests.resources"])
+    captured = capsys.readouterr()
+    assert "class AsyncAppClientFactory" in captured.out
+    assert "class SyncAppClientFactory" in captured.out
+
+
 def test_handler_sync(tmp_path: Path):
     handler(["tests.resources"], sync=True, output=str(tmp_path / "dummy.py"))
 
