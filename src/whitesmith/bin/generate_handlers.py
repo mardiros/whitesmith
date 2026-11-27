@@ -126,7 +126,7 @@ def generate_handlers(
 @cli_command
 def main(subparsers: SubParser) -> None:
     sp_action = subparsers.add_parser(
-        "generate", help="Generate handlers that implement fake routes."
+        "generate-handlers", help="Generate handlers that implement fake routes."
     )
     sp_action.add_argument(
         "-o",
