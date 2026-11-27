@@ -6,21 +6,36 @@ Test helper for blacksmith resources.
 
 ## Motivation
 
+Whitesmith is the swissknife for developping and testing code base that use 
+[[https://](https://github.com/mardiros/blacksmith](blacksmith). 
+
 While using blacksmith, resources are declared using pydantic, and, while testing,
 we never do http calls.
 
-Whitesmith is a helper that create pytest fixtures for blacksmith resources and
-generate handlers for tests.
+Whitesmith is a helper that create pytest fixtures with handlers for tests,
+client types and generate documentation for blacksmith resources and .
 
 ## Usage
+
+### Generating typed client
+
+The command bellow will create a file `blacksmith_client.py` in the codebase
+that override the blacksmith client factory to get a fully typed client.
+
+```bash
+whitesmith generate-types -m my_package.resources -o my_package/resources/blacksmith_client.py
+```
+
+Use `--overwrite` if the file exists and you want to regenerate it.
+
 
 ### Generating fixtures
 
 ```bash
-whitesmith generate -m my_package.resources --out-dir tests/
+whitesmith generate-handlers -m my_package.resources --out-dir tests/
 ```
 
-The commande above will generate a folder `tests/whitesmith` containing
+The command above will generate a folder `tests/whitesmith` containing
 handlers for all the api call with a default implementation.
 
 > **Note**
