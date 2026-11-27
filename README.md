@@ -1,4 +1,5 @@
 # Whitesmith
+
 Test helper for blacksmith resources.
 
 ![Continuous Integration](https://github.com/mardiros/whitesmith/actions/workflows/tests.yml/badge.svg)
@@ -6,8 +7,8 @@ Test helper for blacksmith resources.
 
 ## Motivation
 
-Whitesmith is the swissknife for developping and testing code base that use 
-[[https://](https://github.com/mardiros/blacksmith](blacksmith). 
+Whitesmith is the swissknife for developping and testing code base that use
+[[https://](https://github.com/mardiros/blacksmith](blacksmith).
 
 While using blacksmith, resources are declared using pydantic, and, while testing,
 we never do http calls.
@@ -28,19 +29,21 @@ whitesmith generate-types -m my_package.resources -o my_package/resources/blacks
 
 Use `--overwrite` if the file exists and you want to regenerate it.
 
+Now, you can import the `AsyncAppClientFactory` or `SyncAppClientFactory`
+to get a fully typed client and not import blacksmith module anywhere from the codebase.
 
 ### Generating fixtures
+
+The command below will generate a folder `tests/whitesmith` containing
+handlers for all the api call with a default implementation.
 
 ```bash
 whitesmith generate-handlers -m my_package.resources --out-dir tests/
 ```
 
-The command above will generate a folder `tests/whitesmith` containing
-handlers for all the api call with a default implementation.
-
 > **Note**
-> If you run the command again, the command does not overrite generated files.
-> To generate newer version, use the `--overwrite` flag.
+> If you run the command again, the command does not overwrite generated files.
+> To generate a newer version, use the `--overwrite` flag.
 
 Those fixtures can be adapted to get the result you want,
 they must be present in a whitesmith_handlers directory inside the tests suite.
@@ -49,9 +52,29 @@ they must be present in a whitesmith_handlers directory inside the tests suite.
 
 The whitesmith package provide three pytest fixtures that can be used in the testsuite.
 
-The sync_blacksmith_client, async_blacksmith_client can be used to get
+The fixtures `sync_blacksmith_client`, `async_blacksmith_client` can be used to get
 a blacksmith client instance that use the installed fixtures from the generated
 directory.
 
 Both actually consume the undelying fixtures `whitesmith_router` is a generated
-fixture that contains all the routes contained in the `whitesmith_handlers` directory.
+fixture that contains all the routes contained inside a `whitesmith_handlers` directory.
+This directory is the one created by the commande above `whitesmith generate-handlers`.
+
+You can have multiple `whitesmith_handlers` by creating tests submodules
+to handle mulptiple behavior when its needed.
+
+
+### Building a client contract (open api format)
+
+This feature is a bit experimental but was the main motivation of blacksmith,
+provide a tool for consumer-driven contract (CDC) so generated document
+of client contract is nice to have.
+A tool to ensure server and client contract compatibility could be used to
+enforce maintainability.
+
+
+```bash
+uv run whitesmith generate-openapi -m my_package.resources -o docs/resources/openapis --overwrite
+cd docs/resources/openapis
+python -m http.server 8000
+```
