@@ -782,11 +782,11 @@ wheels = [
 
 [[package]]
 name = "tamahagane"
-version = "0.4.1"
+version = "1.0.1"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/b1/88/d5741a6c726b67c0e90c022c9ae585e7e044f61c59b5a75e7bdbf1a4fe50/tamahagane-0.4.1.tar.gz", hash = "sha256:4b11e234656f99468a1998e39a910207df59da2e7f1fa26dac3cc08f55d0c5c2", size = 5761, upload-time = "2026-01-26T22:22:33.716Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/3f/70/fe66cfe68c6b46ce7796f7a51b06aa7127dc394d06bec6857bbc19b875c1/tamahagane-1.0.1.tar.gz", hash = "sha256:8a3661731afc0385ad2172595a0142abee8d45279b3a9c9430edb5e33a637b7a", size = 6693, upload-time = "2026-11-11T11:20:55.971Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/29/e4/2dfba2428a1f8add1edc60acd9b37eb0ea540f7266a33ab12fe2f4ed25c7/tamahagane-0.4.1-py3-none-any.whl", hash = "sha256:6263f8715d30c988971e6bda60ecd90838aab7bb61e56c213cf00b1fe5b3c9b8", size = 6714, upload-time = "2026-01-26T22:22:32.965Z" },
+    { url = "https://files.pythonhosted.org/packages/68/56/047a363d5ef3b7f9f378e790a21b9ab29e9450a79d66e1b3ba11eb350c96/tamahagane-1.0.1-py3-none-any.whl", hash = "sha256:27f3746136ca45ebcbc4372cd4a692f8d136106cd74aabd9c24df96ba94bfe81", size = 7683, upload-time = "2026-11-11T11:20:55.015Z" },
 ]
 
 [[package]]
@@ -894,7 +894,7 @@ requires-dist = [
     { name = "jinja2", specifier = ">=3.1.2,<4" },
     { name = "polyfactory", specifier = ">=2.14.0,<3" },
     { name = "pydantic", specifier = ">=2.6.0,<3" },
-    { name = "tamahagane", specifier = ">=0.4.1,<1" },
+    { name = "tamahagane", specifier = ">=1,<2" },
 ]
 
 [package.metadata.requires-dev]
