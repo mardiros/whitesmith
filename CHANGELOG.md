@@ -1,3 +1,6 @@
+## 6.0.2 - Released on 2026-11-28
+* Fix the generate-types command which create wrong types based on request type not response. 
+
 ## 6.0.1 - Released on 2026-11-27
 * Upgrade internal deps tamahagane for package compatibility.
 
