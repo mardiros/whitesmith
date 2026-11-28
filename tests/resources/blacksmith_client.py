@@ -10,12 +10,12 @@ from blacksmith import (
     SyncRouteProxy,
 )
 
-from tests.resources.address.phonenumbers import GetPhone
-from tests.resources.organization.users import CollectionGetUser, GetUser
+from tests.resources.address.phonenumbers import Phone
+from tests.resources.organization.users import PartialUser, User
 
 
 class AsyncAddressClient(AsyncBaseClient[HTTPError]):
-    phonenumbers: AsyncRouteProxy[None, GetPhone, HTTPError]
+    phonenumbers: AsyncRouteProxy[None, Phone, HTTPError]
 
 
 class AsyncNotifClient(AsyncBaseClient[HTTPError]):
@@ -23,7 +23,7 @@ class AsyncNotifClient(AsyncBaseClient[HTTPError]):
 
 
 class AsyncOrganizationClient(AsyncBaseClient[HTTPError]):
-    users: AsyncRouteProxy[CollectionGetUser, GetUser, HTTPError]
+    users: AsyncRouteProxy[PartialUser, User, HTTPError]
 
 
 class AsyncAppClientFactory(
@@ -47,7 +47,7 @@ class AsyncAppClientFactory(
 
 
 class SyncAddressClient(SyncBaseClient[HTTPError]):
-    phonenumbers: SyncRouteProxy[None, GetPhone, HTTPError]
+    phonenumbers: SyncRouteProxy[None, Phone, HTTPError]
 
 
 class SyncNotifClient(SyncBaseClient[HTTPError]):
@@ -55,7 +55,7 @@ class SyncNotifClient(SyncBaseClient[HTTPError]):
 
 
 class SyncOrganizationClient(SyncBaseClient[HTTPError]):
-    users: SyncRouteProxy[CollectionGetUser, GetUser, HTTPError]
+    users: SyncRouteProxy[PartialUser, User, HTTPError]
 
 
 class SyncAppClientFactory(
