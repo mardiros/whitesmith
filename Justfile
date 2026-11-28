@@ -23,7 +23,7 @@ unittests test_suite=default_test_suite:
 
 functest functests=functional_test_suite:
     rm -rf tests/whitesmith_handlers/*
-    PYTHONPATH=. uv run whitesmith generate -m tests.resources -o tests
+    PYTHONPATH=. uv run whitesmith generate-handlers -m tests.resources -o tests
     uv run ruff check --fix tests/whitesmith_handlers/
     uv run pytest -sxv {{functests}}
 
