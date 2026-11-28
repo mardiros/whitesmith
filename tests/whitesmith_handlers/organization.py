@@ -7,16 +7,16 @@ from tests.resources.organization.users import PartialUser, User, UserCreated
 from whitesmith import HTTPCollectionResponse, HTTPResponse, router
 
 
-class PartialUserFactory(ModelFactory[PartialUser]):
-    __model__ = PartialUser
+class UserCreatedFactory(ModelFactory[UserCreated]):
+    __model__ = UserCreated
 
 
 class UserFactory(ModelFactory[User]):
     __model__ = User
 
 
-class UserCreatedFactory(ModelFactory[UserCreated]):
-    __model__ = UserCreated
+class PartialUserFactory(ModelFactory[PartialUser]):
+    __model__ = PartialUser
 
 
 @router.get("http://organization.v5/users")

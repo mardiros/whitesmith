@@ -16,11 +16,11 @@ from blacksmith import (
 )
 {%- for client_name, resources in clients.items() -%}
     {%- for resource_name, resource in resources.items() -%}
-{% if safe_type_exists(resource, "collection", "contract", "GET", 0) %}
-from {{ resource.collection.contract["GET"][0].__module__ }} import {{ resource.collection.contract["GET"][0].__name__ }}
+{% if safe_type_exists(resource, "collection", "contract", "GET", 1) %}
+from {{ resource.collection.contract["GET"][1].__module__ }} import {{ resource.collection.contract["GET"][1].__name__ }}
 {%- endif %}
-{% if safe_type_exists(resource, "resource", "contract", "GET", 0) %}
-from {{ resource.resource.contract["GET"][0].__module__ }} import {{ resource.resource.contract["GET"][0].__name__ }}
+{% if safe_type_exists(resource, "resource", "contract", "GET", 1) %}
+from {{ resource.resource.contract["GET"][1].__module__ }} import {{ resource.resource.contract["GET"][1].__name__ }}
 {%- endif %}
     {%- endfor %}
 {%- endfor %}
@@ -33,9 +33,9 @@ from {{ resource.resource.contract["GET"][0].__module__ }} import {{ resource.re
 {%- macro route_proxy(resource, prefix) -%}
 {{prefix}}RouteProxy[
     {{-
-        safe_get_type(resource, "collection", "contract", "GET", 0, "__name__")
+        safe_get_type(resource, "collection", "contract", "GET", 1, "__name__")
     }}, {{
-        safe_get_type(resource, "resource", "contract", "GET", 0, "__name__")
+        safe_get_type(resource, "resource", "contract", "GET", 1, "__name__")
     -}}, HTTPError]
 {%- endmacro -%}
 
